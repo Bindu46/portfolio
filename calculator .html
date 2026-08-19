@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quantum Calc</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Animated Background -->
+
+    <div class="background-grid"></div>
+
+    <div class="glow glow-one"></div>
+    <div class="glow glow-two"></div>
+    <div class="glow glow-three"></div>
+
+
+    <!-- Floating Mathematical Symbols -->
+
+    <div class="floating-symbol symbol-one">π</div>
+    <div class="floating-symbol symbol-two">Σ</div>
+    <div class="floating-symbol symbol-three">√</div>
+    <div class="floating-symbol symbol-four">∞</div>
+    <div class="floating-symbol symbol-five">∫</div>
+    <div class="floating-symbol symbol-six">Δ</div>
+
+
+    <!-- HEADER -->
+
+    <header class="main-header">
+
+        <div class="badge">
+            NEXT GENERATION
+        </div>
+
+        <h1>
+            QUANTUM
+            <span>CALC</span>
+        </h1>
+
+        <p>
+            AI-INSPIRED SCIENTIFIC CALCULATOR
+        </p>
+
+        <div class="header-line"></div>
+
+    </header>
+
+
+    <!-- MAIN -->
+
+    <main class="application">
+
+
+        <!-- LEFT SIDE DESIGN -->
+
+        <section class="visual-panel">
+
+            <div class="orbit orbit-one">
+                <div class="orbit-dot"></div>
+            </div>
+
+            <div class="orbit orbit-two">
+                <div class="orbit-dot"></div>
+            </div>
+
+            <div class="core">
+
+                <div class="core-inner">
+
+                    <div class="core-symbol">
+                        ∑
+                    </div>
+
+                    <span>
+                        QUANTUM
+                    </span>
+
+                    <small>
+                        COMPUTING ENGINE
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-card info-one">
+                <strong>∞</strong>
+                <span>PRECISION</span>
+            </div>
+
+            <div class="info-card info-two">
+                <strong>45+</strong>
+                <span>FUNCTIONS</span>
+            </div>
+
+            <div class="info-card info-three">
+                <strong>24/7</strong>
+                <span>READY</span>
+            </div>
+
+        </section>
+
+
+
+        <!-- CALCULATOR -->
+
+        <section class="calculator-section">
+
+            <div class="calculator">
+
+
+                <!-- CALCULATOR HEADER -->
+
+                <div class="calculator-header">
+
+                    <div class="online">
+
+                        <span class="online-dot"></span>
+
+                        ENGINE ONLINE
+
+                    </div>
+
+                    <div class="calculator-logo">
+                        QC-01
+                    </div>
+
+                </div>
+
+
+                <!-- DISPLAY -->
+
+                <div class="display-container">
+
+                    <div class="display-top">
+
+                        <span id="memoryStatus">
+                            M: 0
+                        </span>
+
+                        <span id="angleStatus">
+                            DEG
+                        </span>
+
+                        <button
+                            onclick="copyResult()"
+                            class="copy-button">
+
+                            COPY
+
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="expression"
+                        class="expression">
+
+                        Ready
+
+                    </div>
+
+
+                    <div
+                        id="result"
+                        class="result">
+
+                        0
+
+                    </div>
+
+                </div>
+
+
+                <!-- CONTROL BAR -->
+
+                <div class="control-bar">
+
+                    <button
+                        id="degBtn"
+                        class="control active"
+                        onclick="setAngle('DEG')">
+
+                        DEG
+
+                    </button>
+
+                    <button
+                        id="radBtn"
+                        class="control"
+                        onclick="setAngle('RAD')">
+
+                        RAD
+
+                    </button>
+
+                    <button
+                        id="soundBtn"
+                        class="control"
+                        onclick="toggleSound()">
+
+                        🔊
+
+                    </button>
+
+                    <button
+                        class="control"
+                        onclick="toggleTheme()">
+
+                        ◐
+
+                    </button>
+
+                </div>
+
+
+                <!-- MEMORY -->
+
+                <div class="memory-row">
+
+                    <button onclick="memoryClear()">
+                        MC
+                    </button>
+
+                    <button onclick="memoryRecall()">
+                        MR
+                    </button>
+
+                    <button onclick="memoryAdd()">
+                        M+
+                    </button>
+
+                    <button onclick="memorySubtract()">
+                        M−
+                    </button>
+
+                    <button onclick="memoryStore()">
+                        MS
+                    </button>
+
+                </div>
+
+
+                <!-- SCIENTIFIC BUTTONS -->
+
+                <div class="scientific-grid">
+
+                    <button onclick="add('sin(')">
+                        sin
+                    </button>
+
+                    <button onclick="add('cos(')">
+                        cos
+                    </button>
+
+                    <button onclick="add('tan(')">
+                        tan
+                    </button>
+
+                    <button onclick="add('cot(')">
+                        cot
+                    </button>
+
+                    <button onclick="add('sec(')">
+                        sec
+                    </button>
+
+                    <button onclick="add('csc(')">
+                        csc
+                    </button>
+
+                    <button onclick="add('asin(')">
+                        sin⁻¹
+                    </button>
+
+                    <button onclick="add('acos(')">
+                        cos⁻¹
+                    </button>
+
+                    <button onclick="add('atan(')">
+                        tan⁻¹
+                    </button>
+
+                    <button onclick="add('log(')">
+                        log
+                    </button>
+
+                    <button onclick="add('ln(')">
+                        ln
+                    </button>
+
+                    <button onclick="add('√(')">
+                        √
+                    </button>
+
+                    <button onclick="add('∛(')">
+                        ∛
+                    </button>
+
+                    <button onclick="square()">
+                        x²
+                    </button>
+
+                    <button onclick="cube()">
+                        x³
+                    </button>
+
+                    <button onclick="add('^')">
+                        xʸ
+                    </button>
+
+                    <button onclick="factorial()">
+                        x!
+                    </button>
+
+                    <button onclick="add('π')">
+                        π
+                    </button>
+
+                    <button onclick="add('e')">
+                        e
+                    </button>
+
+                    <button onclick="add('%')">
+                        %
+                    </button>
+
+                </div>
+
+
+                <!-- MAIN BUTTONS -->
+
+                <div class="number-grid">
+
+                    <button
+                        class="danger"
+                        onclick="clearAll()">
+                        AC
+                    </button>
+
+                    <button
+                        class="special"
+                        onclick="deleteLast()">
+                        DEL
+                    </button>
+
+                    <button
+                        class="special"
+                        onclick="add('(')">
+                        (
+                    </button>
+
+                    <button
+                        class="special"
+                        onclick="add(')')">
+                        )
+                    </button>
+
+                    <button
+                        class="operator"
+                        onclick="add('÷')">
+                        ÷
+                    </button>
+
+
+                    <button onclick="add('7')">
+                        7
+                    </button>
+
+                    <button onclick="add('8')">
+                        8
+                    </button>
+
+                    <button onclick="add('9')">
+                        9
+                    </button>
+
+                    <button
+                        class="operator"
+                        onclick="add('×')">
+                        ×
+                    </button>
+
+                    <button
+                        class="special"
+                        onclick="reciprocal()">
+                        1/x
+                    </button>
+
+
+                    <button onclick="add('4')">
+                        4
+                    </button>
+
+                    <button onclick="add('5')">
+                        5
+                    </button>
+
+                    <button onclick="add('6')">
+                        6
+                    </button>
+
+                    <button
+                        class="operator"
+                        onclick="add('−')">
+                        −
+                    </button>
+
+                    <button
+                        class="special"
+                        onclick="add('Ans')">
+                        Ans
+                    </button>
+
+
+                    <button onclick="add('1')">
+                        1
+                    </button>
+
+                    <button onclick="add('2')">
+                        2
+                    </button>
+
+                    <button onclick="add('3')">
+                        3
+                    </button>
+
+                    <button
+                        class="operator"
+                        onclick="add('+')">
+                        +
+                    </button>
+
+                    <button
+                        class="special"
+                        onclick="negate()">
+                        ±
+                    </button>
+
+
+                    <button
+                        class="zero"
+                        onclick="add('0')">
+                        0
+                    </button>
+
+                    <button onclick="add('.')">
+                        .
+                    </button>
+
+                    <button
+                        class="equals"
+                        onclick="calculate()">
+                        =
+                    </button>
+
+                </div>
+
+
+                <div class="calculator-footer">
+
+                    <span>
+                        ⌨ KEYBOARD ACTIVE
+                    </span>
+
+                    <span>
+                        QUANTUM ENGINE v2.0
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- HISTORY -->
+
+        <aside class="history-section">
+
+            <div class="history-card">
+
+                <div class="history-top">
+
+                    <div>
+
+                        <div class="history-title">
+                            CALCULATION
+                        </div>
+
+                        <div class="history-subtitle">
+                            HISTORY
+                        </div>
+
+                    </div>
+
+                    <button
+                        onclick="clearHistory()"
+                        class="clear-history">
+
+                        CLEAR
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="history"
+                    class="history-list">
+
+                    <div class="history-empty">
+
+                        <div class="history-empty-icon">
+                            ∑
+                        </div>
+
+                        <strong>
+                            NO HISTORY
+                        </strong>
+
+                        <span>
+                            Calculations will
+                            appear here.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- HISTORY STATISTICS -->
+
+            <div class="stats">
+
+                <div class="stat">
+                    <strong id="calculationCount">
+                        0
+                    </strong>
+                    <span>CALCULATIONS</span>
+                </div>
+
+                <div class="stat">
+                    <strong>∞</strong>
+                    <span>PRECISION</span>
+                </div>
+
+                <div class="stat">
+                    <strong>2.0</strong>
+                    <span>ENGINE</span>
+                </div>
+
+            </div>
+
+        </aside>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <span>
+            QUANTUM CALC
+        </span>
+
+        <span>
+            SCIENTIFIC COMPUTATION SYSTEM
+        </span>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
