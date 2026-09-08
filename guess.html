@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Number Master 🎯</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+
+            font-family: Arial, sans-serif;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 10px;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    #44318d,
+                    transparent 40%
+                ),
+                radial-gradient(
+                    circle at bottom right,
+                    #007c91,
+                    transparent 40%
+                ),
+                #080b18;
+
+            color: white;
+        }
+
+
+        /* Background glowing circles */
+
+        .circle {
+            position: fixed;
+
+            border-radius: 50%;
+
+            filter: blur(5px);
+
+            opacity: 0.25;
+
+            z-index: 0;
+
+            animation: float 8s infinite ease-in-out;
+        }
+
+        .circle1 {
+            width: 150px;
+            height: 150px;
+
+            background: #00e5ff;
+
+            top: 5%;
+            left: 5%;
+        }
+
+        .circle2 {
+            width: 120px;
+            height: 120px;
+
+            background: #ff00cc;
+
+            bottom: 5%;
+            right: 5%;
+
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-30px);
+            }
+        }
+
+
+        /* Game Box */
+
+        .game {
+            position: relative;
+
+            z-index: 2;
+
+            width: 380px;
+            max-width: 95vw;
+
+            padding: 22px;
+
+            text-align: center;
+
+            background: rgba(255, 255, 255, 0.08);
+
+            border: 1px solid rgba(255, 255, 255, 0.2);
+
+            border-radius: 20px;
+
+            backdrop-filter: blur(20px);
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.5);
+
+            animation: appear 0.8s ease;
+        }
+
+        @keyframes appear {
+
+            from {
+                opacity: 0;
+                transform: scale(0.85);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+
+        /* Heading */
+
+        h1 {
+            font-size: 28px;
+
+            margin-bottom: 5px;
+
+            text-shadow:
+                0 0 10px #00e5ff,
+                0 0 25px #00e5ff;
+        }
+
+        .subtitle {
+            font-size: 14px;
+
+            color: #bfc5d9;
+
+            margin-bottom: 10px;
+        }
+
+
+        /* Number Circle */
+
+        .number {
+            width: 85px;
+            height: 85px;
+
+            margin: 10px auto;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 50%;
+
+            font-size: 40px;
+
+            font-weight: bold;
+
+            background:
+                rgba(0, 229, 255, 0.08);
+
+            border: 3px solid #00e5ff;
+
+            box-shadow:
+                0 0 15px #00e5ff,
+                inset 0 0 20px rgba(0, 229, 255, 0.2);
+
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%, 100% {
+                box-shadow: 0 0 15px #00e5ff;
+            }
+
+            50% {
+                box-shadow:
+                    0 0 30px #00e5ff,
+                    0 0 50px #00e5ff;
+            }
+        }
+
+
+        /* Clue */
+
+        .clue {
+            margin: 8px 0;
+
+            padding: 9px;
+
+            min-height: 38px;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255, 255, 255, 0.08);
+
+            border:
+                1px solid rgba(255, 255, 255, 0.15);
+
+            color: #00e5ff;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+
+        /* Input */
+
+        input {
+            width: 100%;
+
+            padding: 11px;
+
+            border: 2px solid transparent;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255, 255, 255, 0.1);
+
+            color: white;
+
+            font-size: 16px;
+
+            text-align: center;
+
+            outline: none;
+
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: #00e5ff;
+
+            box-shadow:
+                0 0 15px #00e5ff;
+        }
+
+        input::placeholder {
+            color: #aaa;
+        }
+
+
+        /* Buttons */
+
+        button {
+            width: 100%;
+
+            padding: 11px;
+
+            margin-top: 8px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            color: white;
+
+            cursor: pointer;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #00bcd4,
+                    #007cff
+                );
+
+            box-shadow:
+                0 5px 15px
+                rgba(0, 188, 212, 0.4);
+
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 25px
+                rgba(0, 229, 255, 0.7);
+        }
+
+        button:active {
+            transform: scale(0.96);
+        }
+
+
+        /* New Game Button */
+
+        .restart {
+            background:
+                linear-gradient(
+                    90deg,
+                    #ff416c,
+                    #ff4b2b
+                );
+
+            box-shadow:
+                0 5px 15px
+                rgba(255, 65, 108, 0.4);
+        }
+
+        .restart:hover {
+            box-shadow:
+                0 8px 25px
+                rgba(255, 65, 108, 0.7);
+        }
+
+
+        /* Message */
+
+        #message {
+            min-height: 25px;
+
+            margin: 10px 0;
+
+            font-size: 15px;
+
+            font-weight: bold;
+        }
+
+
+        /* Statistics */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 7px;
+
+            margin-top: 10px;
+        }
+
+        .stat {
+            padding: 8px 3px;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255, 255, 255, 0.08);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.1);
+
+            font-size: 13px;
+        }
+
+        .stat span {
+            display: block;
+
+            margin-top: 3px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            color: #00e5ff;
+        }
+
+
+        /* Winning Animation */
+
+        .win {
+            animation:
+                winAnimation
+                0.5s
+                infinite alternate;
+        }
+
+        @keyframes winAnimation {
+
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.04);
+            }
+        }
+
+
+        /* Small Height Screens */
+
+        @media (max-height: 700px) {
+
+            .game {
+                width: 350px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .subtitle {
+                font-size: 12px;
+                margin-bottom: 5px;
+            }
+
+            .number {
+                width: 70px;
+                height: 70px;
+
+                font-size: 32px;
+
+                margin: 7px auto;
+            }
+
+            .clue {
+                margin: 5px 0;
+                padding: 7px;
+
+                font-size: 13px;
+            }
+
+            input {
+                padding: 9px;
+                font-size: 15px;
+            }
+
+            button {
+                padding: 9px;
+                margin-top: 6px;
+
+                font-size: 14px;
+            }
+
+            #message {
+                margin: 6px 0;
+                font-size: 14px;
+            }
+
+            .stats {
+                margin-top: 6px;
+            }
+
+            .stat {
+                padding: 6px 2px;
+            }
+        }
+
+
+        /* Mobile */
+
+        @media (max-width: 500px) {
+
+            .game {
+                width: 92%;
+                padding: 18px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- Background effects -->
+
+    <div class="circle circle1"></div>
+
+    <div class="circle circle2"></div>
+
+
+    <!-- Game -->
+
+    <div class="game" id="game">
+
+        <h1>
+            🎯 NUMBER MASTER
+        </h1>
+
+
+        <p class="subtitle">
+            Guess the secret number between 1 and 100
+        </p>
+
+
+        <!-- Secret Number -->
+
+        <div class="number" id="number">
+            ?
+        </div>
+
+
+        <!-- Clue -->
+
+        <div class="clue" id="clue">
+            🔎 Clue: The number is between 1 and 100
+        </div>
+
+
+        <!-- Input -->
+
+        <input
+            type="number"
+            id="guess"
+            placeholder="Enter your guess"
+            min="1"
+            max="100"
+        >
+
+
+        <!-- Guess -->
+
+        <button onclick="checkGuess()">
+            🎮 MAKE A GUESS
+        </button>
+
+
+        <!-- New Game -->
+
+        <button
+            class="restart"
+            onclick="restartGame()">
+
+            🔄 NEW GAME
+
+        </button>
+
+
+        <!-- Message -->
+
+        <div id="message">
+            🚀 Make your first guess!
+        </div>
+
+
+        <!-- Statistics -->
+
+        <div class="stats">
+
+            <div class="stat">
+
+                ❤️ Lives
+
+                <span id="lives">
+                    5
+                </span>
+
+            </div>
+
+
+            <div class="stat">
+
+                ⭐ Score
+
+                <span id="score">
+                    100
+                </span>
+
+            </div>
+
+
+            <div class="stat">
+
+                🔥 Streak
+
+                <span id="streak">
+                    0
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+
+        /* Variables */
+
+        let secretNumber;
+
+        let lives;
+
+        let score;
+
+        let streak = 0;
+
+        let gameOver = false;
+
+
+        /* Start Game */
+
+        function startGame() {
+
+            secretNumber =
+                Math.floor(
+                    Math.random() * 100
+                ) + 1;
+
+            lives = 5;
+
+            score = 100;
+
+            gameOver = false;
+
+
+            document.getElementById("lives")
+                .innerText = lives;
+
+
+            document.getElementById("score")
+                .innerText = score;
+
+
+            document.getElementById("streak")
+                .innerText = streak;
+
+
+            document.getElementById("number")
+                .innerText = "?";
+
+
+            document.getElementById("message")
+                .innerText =
+                "🚀 Make your first guess!";
+
+
+            document.getElementById("clue")
+                .innerText =
+                "🔎 Clue: The number is between 1 and 100";
+
+
+            document.getElementById("guess")
+                .value = "";
+
+
+            document.getElementById("game")
+                .classList.remove("win");
+        }
+
+
+        /* Check Guess */
+
+        function checkGuess() {
+
+            if (gameOver) {
+
+                document.getElementById("message")
+                    .innerText =
+                    "🔄 Click NEW GAME to play again.";
+
+                return;
+            }
+
+
+            let guess =
+                Number(
+                    document.getElementById("guess").value
+                );
+
+
+            /* Validation */
+
+            if (
+                guess < 1 ||
+                guess > 100
+            ) {
+
+                document.getElementById("message")
+                    .innerText =
+                    "⚠️ Enter a number between 1 and 100.";
+
+                return;
+            }
+
+
+            /* Correct Guess */
+
+            if (guess === secretNumber) {
+
+                document.getElementById("number")
+                    .innerText =
+                    secretNumber;
+
+
+                document.getElementById("message")
+                    .innerText =
+                    "🎉 AMAZING! YOU WON! 🎉";
+
+
+                document.getElementById("clue")
+                    .innerText =
+                    "🏆 Perfect! You found the number!";
+
+
+                streak++;
+
+                score += streak * 20;
+
+
+                document.getElementById("score")
+                    .innerText =
+                    score;
+
+
+                document.getElementById("streak")
+                    .innerText =
+                    streak;
+
+
+                gameOver = true;
+
+
+                document.getElementById("game")
+                    .classList.add("win");
+
+
+                createConfetti();
+
+                playSound(600);
+
+                return;
+            }
+
+
+            /* Wrong Guess */
+
+            lives--;
+
+            score -= 10;
+
+
+            if (score < 0) {
+                score = 0;
+            }
+
+
+            document.getElementById("lives")
+                .innerText =
+                lives;
+
+
+            document.getElementById("score")
+                .innerText =
+                score;
+
+
+            /* Too Low */
+
+            if (guess < secretNumber) {
+
+                let lower = guess;
+
+                let upper =
+                    Math.ceil(
+                        secretNumber / 10
+                    ) * 10;
+
+
+                if (upper > 100) {
+                    upper = 100;
+                }
+
+
+                document.getElementById("message")
+                    .innerText =
+                    "📈 TOO LOW!";
+
+
+                document.getElementById("clue")
+                    .innerText =
+                    "🔎 Clue: The number is between "
+                    + lower
+                    + " and "
+                    + upper;
+
+
+                playSound(200);
+            }
+
+
+            /* Too High */
+
+            else {
+
+                let lower =
+                    Math.floor(
+                        secretNumber / 10
+                    ) * 10;
+
+
+                let upper = guess;
+
+
+                document.getElementById("message")
+                    .innerText =
+                    "📉 TOO HIGH!";
+
+
+                document.getElementById("clue")
+                    .innerText =
+                    "🔎 Clue: The number is between "
+                    + lower
+                    + " and "
+                    + upper;
+
+
+                playSound(200);
+            }
+
+
+            /* Game Over */
+
+            if (lives === 0) {
+
+                document.getElementById("message")
+                    .innerText =
+                    "💀 GAME OVER!";
+
+
+                document.getElementById("clue")
+                    .innerText =
+                    "🎯 The secret number was "
+                    + secretNumber;
+
+
+                document.getElementById("number")
+                    .innerText =
+                    secretNumber;
+
+
+                streak = 0;
+
+                gameOver = true;
+            }
+
+
+            document.getElementById("guess")
+                .value = "";
+
+            document.getElementById("guess")
+                .focus();
+        }
+
+
+        /* New Game */
+
+        function restartGame() {
+            startGame();
+        }
+
+
+        /* Enter Key */
+
+        document.getElementById("guess")
+            .addEventListener(
+                "keydown",
+                function(event) {
+
+                    if (event.key === "Enter") {
+                        checkGuess();
+                    }
+
+                }
+            );
+
+
+        /* Sound */
+
+        function playSound(frequency) {
+
+            let audio =
+                new (
+                    window.AudioContext ||
+                    window.webkitAudioContext
+                )();
+
+
+            let oscillator =
+                audio.createOscillator();
+
+
+            let gain =
+                audio.createGain();
+
+
+            oscillator.frequency.value =
+                frequency;
+
+
+            oscillator.connect(gain);
+
+            gain.connect(audio.destination);
+
+
+            oscillator.start();
+
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.0001,
+                audio.currentTime + 0.3
+            );
+
+
+            oscillator.stop(
+                audio.currentTime + 0.3
+            );
+        }
+
+
+        /* Confetti */
+
+        function createConfetti() {
+
+            for (let i = 0; i < 80; i++) {
+
+                let confetti =
+                    document.createElement("div");
+
+
+                confetti.style.position =
+                    "fixed";
+
+
+                confetti.style.width = "8px";
+
+                confetti.style.height = "8px";
+
+
+                confetti.style.background =
+                    `hsl(
+                        ${Math.random() * 360},
+                        100%,
+                        60%
+                    )`;
+
+
+                confetti.style.left =
+                    Math.random() * 100 + "vw";
+
+
+                confetti.style.top =
+                    "-10px";
+
+
+                confetti.style.zIndex = "10";
+
+
+                confetti.style.borderRadius =
+                    "50%";
+
+
+                document.body.appendChild(
+                    confetti
+                );
+
+
+                let fall =
+                    confetti.animate(
+
+                        [
+                            {
+                                transform:
+                                    "translateY(0) rotate(0deg)"
+                            },
+
+                            {
+                                transform:
+                                    "translateY(110vh) rotate(720deg)"
+                            }
+                        ],
+
+                        {
+                            duration:
+                                2000 +
+                                Math.random() * 3000,
+
+                            easing:
+                                "ease-out"
+                        }
+                    );
+
+
+                fall.onfinish =
+                    function() {
+                        confetti.remove();
+                    };
+
+            }
+        }
+
+
+        /* Start */
+
+        startGame();
+
+    </script>
+
+</body>
+
+</html>
