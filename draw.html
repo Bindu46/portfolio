@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Diagram Drawing Board</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef1f5;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            height: 65px;
+            background: #20232a;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 20px;
+        }
+
+        header h1 {
+            font-size: 22px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        .header-buttons button {
+            padding: 9px 13px;
+            border: none;
+            border-radius: 6px;
+
+            background: white;
+            color: #222;
+
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .header-buttons button:hover {
+            background: #ddd;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            display: flex;
+
+            height: calc(100vh - 65px);
+        }
+
+        /* ================= TOOLBAR ================= */
+
+        .toolbar {
+            width: 180px;
+
+            background: white;
+
+            padding: 15px;
+
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+
+            overflow-y: auto;
+        }
+
+        .toolbar h3 {
+            margin-bottom: 15px;
+
+            font-size: 18px;
+        }
+
+        .tool {
+            width: 100%;
+
+            padding: 11px;
+
+            margin-bottom: 8px;
+
+            border: 1px solid #ddd;
+
+            background: #f8f8f8;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+
+            text-align: left;
+
+            font-size: 14px;
+        }
+
+        .tool:hover {
+            background: #e8edf3;
+        }
+
+        .tool.active {
+            background: #20232a;
+
+            color: white;
+
+            border-color: #20232a;
+        }
+
+        /* ================= SETTINGS ================= */
+
+        .settings {
+            margin-top: 20px;
+        }
+
+        .settings label {
+            display: block;
+
+            margin-top: 15px;
+            margin-bottom: 6px;
+
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        #color {
+            width: 100%;
+            height: 35px;
+
+            cursor: pointer;
+        }
+
+        #size {
+            width: 100%;
+        }
+
+        /* ================= CANVAS ================= */
+
+        .canvas-container {
+            flex: 1;
+
+            padding: 15px;
+
+            overflow: auto;
+        }
+
+        #canvas {
+            display: block;
+
+            background: white;
+
+            border: 2px solid #ccc;
+
+            border-radius: 8px;
+
+            cursor: crosshair;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 700px) {
+
+            header {
+                height: 55px;
+
+                padding: 0 10px;
+            }
+
+            header h1 {
+                font-size: 16px;
+            }
+
+            .header-buttons button {
+                padding: 6px;
+
+                font-size: 10px;
+            }
+
+            .toolbar {
+                width: 130px;
+
+                padding: 8px;
+            }
+
+            .toolbar h3 {
+                font-size: 16px;
+            }
+
+            .tool {
+                font-size: 12px;
+
+                padding: 8px;
+            }
+
+            .canvas-container {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <h1>🎨 Diagram Drawing Board</h1>
+
+        <div class="header-buttons">
+
+            <button onclick="undo()">
+                ↩ Undo
+            </button>
+
+            <button onclick="redo()">
+                ↪ Redo
+            </button>
+
+            <button onclick="clearCanvas()">
+                🗑 Clear
+            </button>
+
+            <button onclick="downloadImage()">
+                💾 Save
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="main">
+
+
+        <!-- ================= LEFT TOOLBAR ================= -->
+
+        <div class="toolbar">
+
+            <h3>Tools</h3>
+
+
+            <button
+                class="tool active"
+                onclick="selectTool('pen', this)">
+                ✏️ Pen
+            </button>
+
+
+            <button
+                class="tool"
+                onclick="selectTool('line', this)">
+                ➖ Line
+            </button>
+
+
+            <button
+                class="tool"
+                onclick="selectTool('rectangle', this)">
+                ▭ Rectangle
+            </button>
+
+
+            <button
+                class="tool"
+                onclick="selectTool('circle', this)">
+                ⭕ Circle
+            </button>
+
+
+            <button
+                class="tool"
+                onclick="selectTool('arrow', this)">
+                ➡️ Arrow
+            </button>
+
+
+            <button
+                class="tool"
+                onclick="selectTool('eraser', this)">
+                🧹 Eraser
+            </button>
+
+
+            <!-- ================= SETTINGS ================= -->
+
+            <div class="settings">
+
+                <label>
+                    Color
+                </label>
+
+                <input
+                    type="color"
+                    id="color"
+                    value="#000000">
+
+
+                <label>
+                    Brush Size
+                </label>
+
+                <input
+                    type="range"
+                    id="size"
+                    min="1"
+                    max="20"
+                    value="3">
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= DRAWING AREA ================= -->
+
+        <div class="canvas-container">
+
+            <canvas
+                id="canvas"
+                width="1200"
+                height="700">
+            </canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        const canvas =
+            document.getElementById("canvas");
+
+        const ctx =
+            canvas.getContext("2d");
+
+
+        /* Current tool */
+
+        let tool = "pen";
+
+        let drawing = false;
+
+
+        /* Starting position */
+
+        let startX = 0;
+
+        let startY = 0;
+
+
+        /* Undo / Redo */
+
+        let history = [];
+
+        let redoHistory = [];
+
+
+        /* ================= TOOL SELECTION ================= */
+
+        function selectTool(selectedTool, button) {
+
+            tool = selectedTool;
+
+
+            document
+                .querySelectorAll(".tool")
+                .forEach(function(btn) {
+
+                    btn.classList.remove("active");
+
+                });
+
+
+            button.classList.add("active");
+
+
+            if (tool === "eraser") {
+
+                canvas.style.cursor = "cell";
+
+            } else {
+
+                canvas.style.cursor = "crosshair";
+
+            }
+
+        }
+
+
+        /* ================= MOUSE POSITION ================= */
+
+        function getMousePosition(e) {
+
+            const rect =
+                canvas.getBoundingClientRect();
+
+
+            return {
+
+                x: e.clientX - rect.left,
+
+                y: e.clientY - rect.top
+
+            };
+
+        }
+
+
+        /* ================= MOUSE DOWN ================= */
+
+        canvas.addEventListener(
+            "mousedown",
+            function(e) {
+
+                const pos =
+                    getMousePosition(e);
+
+
+                startX = pos.x;
+
+                startY = pos.y;
+
+
+                drawing = true;
+
+
+                saveState();
+
+
+                if (
+                    tool === "pen" ||
+                    tool === "eraser"
+                ) {
+
+                    ctx.beginPath();
+
+                    ctx.moveTo(
+                        startX,
+                        startY
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* ================= MOUSE MOVE ================= */
+
+        canvas.addEventListener(
+            "mousemove",
+            function(e) {
+
+                if (!drawing) {
+                    return;
+                }
+
+
+                const pos =
+                    getMousePosition(e);
+
+
+                const x = pos.x;
+
+                const y = pos.y;
+
+
+                const color =
+                    document
+                    .getElementById("color")
+                    .value;
+
+
+                const size =
+                    document
+                    .getElementById("size")
+                    .value;
+
+
+                ctx.lineWidth = size;
+
+                ctx.lineCap = "round";
+
+
+                /* PEN */
+
+                if (tool === "pen") {
+
+                    ctx.strokeStyle =
+                        color;
+
+                    ctx.lineTo(x, y);
+
+                    ctx.stroke();
+
+                }
+
+
+                /* ERASER */
+
+                else if (tool === "eraser") {
+
+                    ctx.strokeStyle =
+                        "white";
+
+                    ctx.lineTo(x, y);
+
+                    ctx.stroke();
+
+                }
+
+            }
+        );
+
+
+        /* ================= MOUSE UP ================= */
+
+        canvas.addEventListener(
+            "mouseup",
+            function(e) {
+
+                if (!drawing) {
+                    return;
+                }
+
+
+                drawing = false;
+
+
+                const pos =
+                    getMousePosition(e);
+
+
+                const endX = pos.x;
+
+                const endY = pos.y;
+
+
+                const color =
+                    document
+                    .getElementById("color")
+                    .value;
+
+
+                const size =
+                    document
+                    .getElementById("size")
+                    .value;
+
+
+                ctx.lineWidth = size;
+
+                ctx.strokeStyle = color;
+
+                ctx.lineCap = "round";
+
+
+                /* LINE */
+
+                if (tool === "line") {
+
+                    ctx.beginPath();
+
+                    ctx.moveTo(
+                        startX,
+                        startY
+                    );
+
+                    ctx.lineTo(
+                        endX,
+                        endY
+                    );
+
+                    ctx.stroke();
+
+                }
+
+
+                /* RECTANGLE */
+
+                else if (tool === "rectangle") {
+
+                    ctx.beginPath();
+
+                    ctx.strokeRect(
+
+                        startX,
+
+                        startY,
+
+                        endX - startX,
+
+                        endY - startY
+
+                    );
+
+                }
+
+
+                /* CIRCLE */
+
+                else if (tool === "circle") {
+
+                    const radius =
+                        Math.sqrt(
+
+                            Math.pow(
+                                endX - startX,
+                                2
+                            )
+
+                            +
+
+                            Math.pow(
+                                endY - startY,
+                                2
+                            )
+
+                        );
+
+
+                    ctx.beginPath();
+
+
+                    ctx.arc(
+
+                        startX,
+
+                        startY,
+
+                        radius,
+
+                        0,
+
+                        Math.PI * 2
+
+                    );
+
+
+                    ctx.stroke();
+
+                }
+
+
+                /* ARROW */
+
+                else if (tool === "arrow") {
+
+                    drawArrow(
+
+                        startX,
+
+                        startY,
+
+                        endX,
+
+                        endY
+
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* ================= ARROW ================= */
+
+        function drawArrow(
+            x1,
+            y1,
+            x2,
+            y2
+        ) {
+
+            const headLength = 12;
+
+
+            const angle =
+                Math.atan2(
+
+                    y2 - y1,
+
+                    x2 - x1
+
+                );
+
+
+            ctx.beginPath();
+
+
+            /* Main line */
+
+            ctx.moveTo(
+                x1,
+                y1
+            );
+
+
+            ctx.lineTo(
+                x2,
+                y2
+            );
+
+
+            /* Arrow head */
+
+            ctx.lineTo(
+
+                x2 -
+                headLength *
+                Math.cos(
+                    angle - Math.PI / 6
+                ),
+
+                y2 -
+                headLength *
+                Math.sin(
+                    angle - Math.PI / 6
+                )
+
+            );
+
+
+            ctx.moveTo(
+                x2,
+                y2
+            );
+
+
+            ctx.lineTo(
+
+                x2 -
+                headLength *
+                Math.cos(
+                    angle + Math.PI / 6
+                ),
+
+                y2 -
+                headLength *
+                Math.sin(
+                    angle + Math.PI / 6
+                )
+
+            );
+
+
+            ctx.stroke();
+
+        }
+
+
+        /* ================= SAVE STATE ================= */
+
+        function saveState() {
+
+            history.push(
+                canvas.toDataURL()
+            );
+
+
+            if (history.length > 30) {
+
+                history.shift();
+
+            }
+
+
+            redoHistory = [];
+
+        }
+
+
+        /* ================= UNDO ================= */
+
+        function undo() {
+
+            if (history.length <= 1) {
+
+                return;
+
+            }
+
+
+            redoHistory.push(
+                history.pop()
+            );
+
+
+            const previous =
+                history[
+                    history.length - 1
+                ];
+
+
+            const image =
+                new Image();
+
+
+            image.onload =
+                function() {
+
+                    ctx.clearRect(
+
+                        0,
+                        0,
+                        canvas.width,
+                        canvas.height
+
+                    );
+
+
+                    ctx.drawImage(
+                        image,
+                        0,
+                        0
+                    );
+
+                };
+
+
+            image.src = previous;
+
+        }
+
+
+        /* ================= REDO ================= */
+
+        function redo() {
+
+            if (redoHistory.length === 0) {
+
+                return;
+
+            }
+
+
+            const state =
+                redoHistory.pop();
+
+
+            history.push(state);
+
+
+            const image =
+                new Image();
+
+
+            image.onload =
+                function() {
+
+                    ctx.clearRect(
+
+                        0,
+                        0,
+                        canvas.width,
+                        canvas.height
+
+                    );
+
+
+                    ctx.drawImage(
+                        image,
+                        0,
+                        0
+                    );
+
+                };
+
+
+            image.src = state;
+
+        }
+
+
+        /* ================= CLEAR ================= */
+
+        function clearCanvas() {
+
+            ctx.fillStyle = "white";
+
+
+            ctx.fillRect(
+
+                0,
+                0,
+                canvas.width,
+                canvas.height
+
+            );
+
+
+            saveState();
+
+        }
+
+
+        /* ================= DOWNLOAD ================= */
+
+        function downloadImage() {
+
+            const link =
+                document.createElement("a");
+
+
+            link.download =
+                "my-diagram.png";
+
+
+            link.href =
+                canvas.toDataURL(
+                    "image/png"
+                );
+
+
+            link.click();
+
+        }
+
+
+        /* ================= INITIAL CANVAS ================= */
+
+        ctx.fillStyle = "white";
+
+
+        ctx.fillRect(
+
+            0,
+            0,
+            canvas.width,
+            canvas.height
+
+        );
+
+
+        /* First history state */
+
+        history.push(
+            canvas.toDataURL()
+        );
+
+    </script>
+
+</body>
+
+</html>
