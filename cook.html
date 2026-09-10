@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CookEasy - Cooking Website</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #fff8f0;
+            color: #333;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+            height: 70px;
+            background: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #ff5722;
+        }
+
+        .logo span {
+            color: #333;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            color: #ff5722;
+        }
+
+        .login-btn {
+            background: #ff5722;
+            color: white;
+
+            border: none;
+            padding: 10px 18px;
+
+            border-radius: 20px;
+
+            cursor: pointer;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            min-height: 450px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 50px 8%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #fff1df,
+                    #ffe0c2
+                );
+        }
+
+        .hero-content {
+            max-width: 550px;
+        }
+
+        .hero-content h1 {
+            font-size: 52px;
+            line-height: 1.1;
+
+            margin-bottom: 20px;
+
+            color: #2c2c2c;
+        }
+
+        .hero-content h1 span {
+            color: #ff5722;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            line-height: 1.6;
+
+            margin-bottom: 25px;
+
+            color: #666;
+        }
+
+        .explore-btn {
+            background: #ff5722;
+            color: white;
+
+            border: none;
+
+            padding: 14px 28px;
+
+            border-radius: 25px;
+
+            font-size: 16px;
+
+            cursor: pointer;
+        }
+
+        .explore-btn:hover {
+            background: #e64a19;
+        }
+
+        .hero-food {
+            font-size: 180px;
+
+            animation: floatFood 3s ease-in-out infinite;
+        }
+
+        @keyframes floatFood {
+
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+
+        }
+
+        /* ================= SEARCH ================= */
+
+        .search-section {
+            text-align: center;
+
+            padding: 40px 20px;
+        }
+
+        .search-section h2 {
+            font-size: 30px;
+
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            width: 500px;
+            max-width: 90%;
+
+            padding: 14px 20px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 30px;
+
+            outline: none;
+
+            font-size: 16px;
+        }
+
+        .search-box:focus {
+            border-color: #ff5722;
+        }
+
+        /* ================= CATEGORIES ================= */
+
+        .categories {
+            padding: 10px 8% 40px;
+        }
+
+        .categories h2 {
+            margin-bottom: 20px;
+        }
+
+        .category-container {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .category {
+            background: white;
+
+            padding: 12px 22px;
+
+            border-radius: 25px;
+
+            border: 1px solid #eee;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .category:hover,
+        .category.active {
+            background: #ff5722;
+            color: white;
+        }
+
+        /* ================= RECIPES ================= */
+
+        .recipes {
+            padding: 20px 8% 60px;
+        }
+
+        .recipes h2 {
+            font-size: 30px;
+
+            margin-bottom: 25px;
+        }
+
+        .recipe-container {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(250px, 1fr));
+
+            gap: 25px;
+        }
+
+        .recipe-card {
+            background: white;
+
+            border-radius: 15px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.08);
+
+            transition: 0.3s;
+
+            position: relative;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-8px);
+
+            box-shadow:
+                0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .food-image {
+            height: 190px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 100px;
+
+            background: #fff0df;
+        }
+
+        .recipe-info {
+            padding: 18px;
+        }
+
+        .recipe-info h3 {
+            margin-bottom: 8px;
+
+            font-size: 21px;
+        }
+
+        .recipe-info p {
+            color: #777;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+            margin-bottom: 12px;
+        }
+
+        .recipe-details {
+            display: flex;
+
+            justify-content: space-between;
+
+            color: #777;
+
+            font-size: 13px;
+
+            margin-bottom: 15px;
+        }
+
+        .view-btn {
+            width: 100%;
+
+            padding: 10px;
+
+            background: #ff5722;
+
+            border: none;
+
+            color: white;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+        }
+
+        .view-btn:hover {
+            background: #e64a19;
+        }
+
+        .favorite {
+            position: absolute;
+
+            right: 12px;
+            top: 12px;
+
+            width: 38px;
+            height: 38px;
+
+            border-radius: 50%;
+
+            border: none;
+
+            background: white;
+
+            font-size: 20px;
+
+            cursor: pointer;
+
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .favorite.liked {
+            color: red;
+        }
+
+        /* ================= MODAL ================= */
+
+        .modal {
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(0,0,0,0.6);
+
+            align-items: center;
+
+            justify-content: center;
+
+            z-index: 200;
+        }
+
+        .modal-content {
+            background: white;
+
+            width: 500px;
+
+            max-width: 90%;
+
+            max-height: 85vh;
+
+            overflow-y: auto;
+
+            border-radius: 15px;
+
+            padding: 30px;
+
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+
+            right: 20px;
+            top: 15px;
+
+            font-size: 28px;
+
+            cursor: pointer;
+
+            color: #777;
+        }
+
+        .modal-food {
+            text-align: center;
+
+            font-size: 100px;
+
+            margin-bottom: 10px;
+        }
+
+        .modal-content h2 {
+            color: #ff5722;
+
+            margin-bottom: 15px;
+        }
+
+        .modal-content h3 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .modal-content ul,
+        .modal-content ol {
+            margin-left: 20px;
+
+            line-height: 1.8;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #252525;
+
+            color: white;
+
+            padding: 40px 8%;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            flex-wrap: wrap;
+
+            gap: 30px;
+        }
+
+        footer h2 {
+            color: #ff5722;
+
+            margin-bottom: 10px;
+        }
+
+        footer p {
+            color: #bbb;
+
+            max-width: 350px;
+
+            line-height: 1.6;
+        }
+
+        .social {
+            font-size: 25px;
+
+            display: flex;
+
+            gap: 15px;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 700px) {
+
+            nav {
+                padding: 0 20px;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .hero {
+                text-align: center;
+
+                flex-direction: column;
+
+                padding: 40px 20px;
+            }
+
+            .hero-content h1 {
+                font-size: 38px;
+            }
+
+            .hero-food {
+                font-size: 120px;
+
+                margin-top: 20px;
+            }
+
+            .search-box {
+                width: 90%;
+            }
+
+            footer {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <div class="logo">
+            🍳 Cook<span>Easy</span>
+        </div>
+
+        <ul>
+
+            <li>
+                <a href="#home">Home</a>
+            </li>
+
+            <li>
+                <a href="#recipes">Recipes</a>
+            </li>
+
+            <li>
+                <a href="#categories">Categories</a>
+            </li>
+
+            <li>
+                <a href="#about">About</a>
+            </li>
+
+        </ul>
+
+        <button class="login-btn">
+            Login
+        </button>
+
+    </nav>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+
+            <h1>
+                Cook something
+                <span>delicious</span>
+                today!
+            </h1>
+
+            <p>
+                Discover easy, tasty and healthy recipes
+                that anyone can prepare at home.
+            </p>
+
+            <button
+                class="explore-btn"
+                onclick="scrollToRecipes()">
+
+                Explore Recipes 🍽️
+
+            </button>
+
+        </div>
+
+
+        <div class="hero-food">
+
+            🍲
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= SEARCH ================= -->
+
+    <section class="search-section">
+
+        <h2>
+            🔍 Find Your Favorite Recipe
+        </h2>
+
+        <input
+            type="text"
+            id="search"
+            class="search-box"
+            placeholder="Search for pizza, biryani, pasta..."
+            onkeyup="searchRecipes()">
+
+    </section>
+
+
+    <!-- ================= CATEGORIES ================= -->
+
+    <section
+        class="categories"
+        id="categories">
+
+        <h2>
+            🍴 Categories
+        </h2>
+
+        <div class="category-container">
+
+            <div
+                class="category active"
+                onclick="filterRecipes('all', this)">
+                All
+            </div>
+
+            <div
+                class="category"
+                onclick="filterRecipes('indian', this)">
+                🇮🇳 Indian
+            </div>
+
+            <div
+                class="category"
+                onclick="filterRecipes('italian', this)">
+                🇮🇹 Italian
+            </div>
+
+            <div
+                class="category"
+                onclick="filterRecipes('fastfood', this)">
+                🍔 Fast Food
+            </div>
+
+            <div
+                class="category"
+                onclick="filterRecipes('dessert', this)">
+                🍰 Desserts
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= RECIPES ================= -->
+
+    <section
+        class="recipes"
+        id="recipes">
+
+        <h2>
+            ⭐ Popular Recipes
+        </h2>
+
+
+        <div
+            class="recipe-container"
+            id="recipeContainer">
+
+
+            <!-- Biryani -->
+
+            <div
+                class="recipe-card"
+                data-category="indian"
+                data-name="chicken biryani">
+
+                <button
+                    class="favorite"
+                    onclick="favorite(this)">
+                    ♡
+                </button>
+
+                <div class="food-image">
+                    🍛
+                </div>
+
+                <div class="recipe-info">
+
+                    <h3>
+                        Chicken Biryani
+                    </h3>
+
+                    <p>
+                        Delicious aromatic rice
+                        cooked with spicy chicken.
+                    </p>
+
+                    <div class="recipe-details">
+
+                        <span>⏱ 45 min</span>
+
+                        <span>⭐ 4.9</span>
+
+                    </div>
+
+                    <button
+                        class="view-btn"
+                        onclick="showRecipe(
+                            'Chicken Biryani',
+                            '🍛',
+                            ['Basmati Rice',
+                             'Chicken',
+                             'Onion',
+                             'Tomato',
+                             'Biryani Masala',
+                             'Oil'],
+                            [
+                             'Wash and soak rice.',
+                             'Cook chicken with spices.',
+                             'Add rice and water.',
+                             'Cover and cook until rice is done.'
+                            ])">
+
+                        View Recipe
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Pizza -->
+
+            <div
+                class="recipe-card"
+                data-category="italian fastfood"
+                data-name="pizza">
+
+                <button
+                    class="favorite"
+                    onclick="favorite(this)">
+                    ♡
+                </button>
+
+                <div class="food-image">
+                    🍕
+                </div>
+
+                <div class="recipe-info">
+
+                    <h3>
+                        Cheese Pizza
+                    </h3>
+
+                    <p>
+                        Crispy pizza topped with
+                        cheese and fresh vegetables.
+                    </p>
+
+                    <div class="recipe-details">
+
+                        <span>⏱ 30 min</span>
+
+                        <span>⭐ 4.8</span>
+
+                    </div>
+
+                    <button
+                        class="view-btn"
+                        onclick="showRecipe(
+                            'Cheese Pizza',
+                            '🍕',
+                            ['Pizza Base',
+                             'Tomato Sauce',
+                             'Mozzarella Cheese',
+                             'Onion',
+                             'Capsicum'],
+                            [
+                             'Spread tomato sauce.',
+                             'Add vegetables and cheese.',
+                             'Bake until cheese melts.',
+                             'Slice and serve hot.'
+                            ])">
+
+                        View Recipe
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Pasta -->
+
+            <div
+                class="recipe-card"
+                data-category="italian"
+                data-name="pasta">
+
+                <button
+                    class="favorite"
+                    onclick="favorite(this)">
+                    ♡
+                </button>
+
+                <div class="food-image">
+                    🍝
+                </div>
+
+                <div class="recipe-info">
+
+                    <h3>
+                        Creamy Pasta
+                    </h3>
+
+                    <p>
+                        Creamy and cheesy pasta
+                        perfect for dinner.
+                    </p>
+
+                    <div class="recipe-details">
+
+                        <span>⏱ 25 min</span>
+
+                        <span>⭐ 4.7</span>
+
+                    </div>
+
+                    <button
+                        class="view-btn"
+                        onclick="showRecipe(
+                            'Creamy Pasta',
+                            '🍝',
+                            ['Pasta',
+                             'Cream',
+                             'Cheese',
+                             'Garlic',
+                             'Butter',
+                             'Pepper'],
+                            [
+                             'Boil pasta.',
+                             'Heat butter and garlic.',
+                             'Add cream and cheese.',
+                             'Mix pasta and serve.'
+                            ])">
+
+                        View Recipe
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Burger -->
+
+            <div
+                class="recipe-card"
+                data-category="fastfood"
+                data-name="burger">
+
+                <button
+                    class="favorite"
+                    onclick="favorite(this)">
+                    ♡
+                </button>
+
+                <div class="food-image">
+                    🍔
+                </div>
+
+                <div class="recipe-info">
+
+                    <h3>
+                        Cheese Burger
+                    </h3>
+
+                    <p>
+                        Juicy burger with cheese,
+                        vegetables and delicious sauce.
+                    </p>
+
+                    <div class="recipe-details">
+
+                        <span>⏱ 20 min</span>
+
+                        <span>⭐ 4.6</span>
+
+                    </div>
+
+                    <button
+                        class="view-btn"
+                        onclick="showRecipe(
+                            'Cheese Burger',
+                            '🍔',
+                            ['Burger Bun',
+                             'Veg Patty',
+                             'Cheese',
+                             'Tomato',
+                             'Lettuce',
+                             'Sauce'],
+                            [
+                             'Toast the burger bun.',
+                             'Cook the patty.',
+                             'Add cheese and vegetables.',
+                             'Add sauce and serve.'
+                            ])">
+
+                        View Recipe
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Cake -->
+
+            <div
+                class="recipe-card"
+                data-category="dessert"
+                data-name="chocolate cake">
+
+                <button
+                    class="favorite"
+                    onclick="favorite(this)">
+                    ♡
+                </button>
+
+                <div class="food-image">
+                    🍰
+                </div>
+
+                <div class="recipe-info">
+
+                    <h3>
+                        Chocolate Cake
+                    </h3>
+
+                    <p>
+                        Soft, delicious chocolate cake
+                        for every occasion.
+                    </p>
+
+                    <div class="recipe-details">
+
+                        <span>⏱ 50 min</span>
+
+                        <span>⭐ 4.9</span>
+
+                    </div>
+
+                    <button
+                        class="view-btn"
+                        onclick="showRecipe(
+                            'Chocolate Cake',
+                            '🍰',
+                            ['Flour',
+                             'Cocoa Powder',
+                             'Sugar',
+                             'Milk',
+                             'Butter',
+                             'Baking Powder'],
+                            [
+                             'Mix all dry ingredients.',
+                             'Add milk and butter.',
+                             'Pour into a cake pan.',
+                             'Bake until completely cooked.'
+                            ])">
+
+                        View Recipe
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Dosa -->
+
+            <div
+                class="recipe-card"
+                data-category="indian"
+                data-name="dosa">
+
+                <button
+                    class="favorite"
+                    onclick="favorite(this)">
+                    ♡
+                </button>
+
+                <div class="food-image">
+                    🥞
+                </div>
+
+                <div class="recipe-info">
+
+                    <h3>
+                        Crispy Dosa
+                    </h3>
+
+                    <p>
+                        South Indian crispy dosa
+                        served with chutney.
+                    </p>
+
+                    <div class="recipe-details">
+
+                        <span>⏱ 20 min</span>
+
+                        <span>⭐ 4.8</span>
+
+                    </div>
+
+                    <button
+                        class="view-btn"
+                        onclick="showRecipe(
+                            'Crispy Dosa',
+                            '🥞',
+                            ['Dosa Batter',
+                             'Oil',
+                             'Salt'],
+                            [
+                             'Heat the dosa pan.',
+                             'Pour dosa batter.',
+                             'Spread it thinly.',
+                             'Add oil and cook until crispy.'
+                            ])">
+
+                        View Recipe
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= MODAL ================= -->
+
+    <div
+        class="modal"
+        id="recipeModal">
+
+        <div class="modal-content">
+
+            <span
+                class="close"
+                onclick="closeModal()">
+                ×
+            </span>
+
+            <div
+                class="modal-food"
+                id="modalFood">
+            </div>
+
+            <h2 id="modalTitle"></h2>
+
+            <h3>
+                🛒 Ingredients
+            </h3>
+
+            <ul id="ingredients"></ul>
+
+            <h3>
+                👨‍🍳 Cooking Steps
+            </h3>
+
+            <ol id="steps"></ol>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer id="about">
+
+        <div>
+
+            <h2>
+                🍳 CookEasy
+            </h2>
+
+            <p>
+                Simple recipes, delicious food and
+                easy cooking ideas for everyone.
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                Follow Us
+            </h3>
+
+            <div class="social">
+
+                <span>📘</span>
+                <span>📸</span>
+                <span>▶️</span>
+                <span>🐦</span>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        /* ================= SEARCH ================= */
+
+        function searchRecipes() {
+
+            const search =
+                document
+                .getElementById("search")
+                .value
+                .toLowerCase();
+
+
+            const cards =
+                document.querySelectorAll(
+                    ".recipe-card"
+                );
+
+
+            cards.forEach(function(card) {
+
+                const name =
+                    card
+                    .getAttribute("data-name")
+                    .toLowerCase();
+
+
+                if (name.includes(search)) {
+
+                    card.style.display = "block";
+
+                } else {
+
+                    card.style.display = "none";
+
+                }
+
+            });
+
+        }
+
+
+        /* ================= CATEGORY FILTER ================= */
+
+        function filterRecipes(category, button) {
+
+            document
+                .querySelectorAll(".category")
+                .forEach(function(btn) {
+
+                    btn.classList.remove("active");
+
+                });
+
+
+            button.classList.add("active");
+
+
+            const cards =
+                document.querySelectorAll(
+                    ".recipe-card"
+                );
+
+
+            cards.forEach(function(card) {
+
+                const cardCategory =
+                    card.getAttribute(
+                        "data-category"
+                    );
+
+
+                if (
+                    category === "all" ||
+                    cardCategory.includes(category)
+                ) {
+
+                    card.style.display = "block";
+
+                } else {
+
+                    card.style.display = "none";
+
+                }
+
+            });
+
+        }
+
+
+        /* ================= FAVORITE ================= */
+
+        function favorite(button) {
+
+            button.classList.toggle("liked");
+
+
+            if (
+                button.classList.contains("liked")
+            ) {
+
+                button.innerHTML = "♥";
+
+            } else {
+
+                button.innerHTML = "♡";
+
+            }
+
+        }
+
+
+        /* ================= SHOW RECIPE ================= */
+
+        function showRecipe(
+            title,
+            food,
+            ingredients,
+            steps
+        ) {
+
+            document
+                .getElementById("modalTitle")
+                .innerText = title;
+
+
+            document
+                .getElementById("modalFood")
+                .innerText = food;
+
+
+            const ingredientList =
+                document.getElementById(
+                    "ingredients"
+                );
+
+
+            ingredientList.innerHTML = "";
+
+
+            ingredients.forEach(function(item) {
+
+                const li =
+                    document.createElement("li");
+
+                li.innerText = item;
+
+                ingredientList.appendChild(li);
+
+            });
+
+
+            const stepList =
+                document.getElementById(
+                    "steps"
+                );
+
+
+            stepList.innerHTML = "";
+
+
+            steps.forEach(function(step) {
+
+                const li =
+                    document.createElement("li");
+
+                li.innerText = step;
+
+                stepList.appendChild(li);
+
+            });
+
+
+            document
+                .getElementById("recipeModal")
+                .style.display = "flex";
+
+        }
+
+
+        /* ================= CLOSE MODAL ================= */
+
+        function closeModal() {
+
+            document
+                .getElementById("recipeModal")
+                .style.display = "none";
+
+        }
+
+
+        /* ================= CLOSE OUTSIDE ================= */
+
+        window.onclick = function(event) {
+
+            const modal =
+                document.getElementById(
+                    "recipeModal"
+                );
+
+
+            if (event.target === modal) {
+
+                modal.style.display = "none";
+
+            }
+
+        };
+
+
+        /* ================= SCROLL ================= */
+
+        function scrollToRecipes() {
+
+            document
+                .getElementById("recipes")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
+
+        }
+
+    </script>
+
+</body>
+
+</html>
