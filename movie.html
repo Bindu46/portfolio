@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MovieVerse - Movie Explorer</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #0b0b12;
+            color: white;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+            height: 70px;
+            background: #12121c;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            border-bottom: 1px solid #252536;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #ff3158;
+        }
+
+        .logo span {
+            color: white;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 28px;
+        }
+
+        nav ul li a {
+            color: #ddd;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            color: #ff3158;
+        }
+
+        .login {
+            background: #ff3158;
+            border: none;
+            color: white;
+
+            padding: 10px 20px;
+
+            border-radius: 20px;
+
+            cursor: pointer;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            min-height: 480px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 60px 8%;
+
+            background:
+                radial-gradient(
+                    circle at right,
+                    #3b1727,
+                    #0b0b12 55%
+                );
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .hero-content .small-title {
+            color: #ff3158;
+            font-weight: bold;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+
+        .hero-content h1 {
+            font-size: 58px;
+            line-height: 1.05;
+
+            margin-bottom: 20px;
+        }
+
+        .hero-content h1 span {
+            color: #ff3158;
+        }
+
+        .hero-content p {
+            color: #bdbdc8;
+
+            line-height: 1.7;
+
+            font-size: 17px;
+
+            margin-bottom: 25px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .watch-btn {
+            padding: 13px 25px;
+
+            border: none;
+
+            border-radius: 25px;
+
+            background: #ff3158;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-size: 15px;
+        }
+
+        .more-btn {
+            padding: 13px 25px;
+
+            border: 1px solid #555;
+
+            border-radius: 25px;
+
+            background: transparent;
+
+            color: white;
+
+            cursor: pointer;
+        }
+
+        .more-btn:hover {
+            background: white;
+            color: black;
+        }
+
+        .hero-movie {
+            margin-left: auto;
+
+            font-size: 190px;
+
+            animation: movieFloat 3s infinite ease-in-out;
+        }
+
+        @keyframes movieFloat {
+
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-18px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+
+        }
+
+        /* ================= SEARCH ================= */
+
+        .search-section {
+            padding: 40px 8%;
+
+            text-align: center;
+        }
+
+        .search-section h2 {
+            margin-bottom: 20px;
+        }
+
+        .search {
+            width: 600px;
+            max-width: 90%;
+
+            padding: 15px 22px;
+
+            border-radius: 30px;
+
+            border: 1px solid #343445;
+
+            background: #161621;
+
+            color: white;
+
+            outline: none;
+
+            font-size: 16px;
+        }
+
+        .search:focus {
+            border-color: #ff3158;
+        }
+
+        /* ================= GENRES ================= */
+
+        .genres {
+            padding: 10px 8% 35px;
+        }
+
+        .genres h2 {
+            margin-bottom: 18px;
+        }
+
+        .genre-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .genre {
+            background: #171722;
+
+            border: 1px solid #2d2d3d;
+
+            color: #ccc;
+
+            padding: 10px 20px;
+
+            border-radius: 25px;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .genre:hover,
+        .genre.active {
+            background: #ff3158;
+            color: white;
+            border-color: #ff3158;
+        }
+
+        /* ================= MOVIES ================= */
+
+        .movies {
+            padding: 20px 8% 70px;
+        }
+
+        .movies h2 {
+            margin-bottom: 25px;
+            font-size: 30px;
+        }
+
+        .movie-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 25px;
+        }
+
+        .movie-card {
+            background: #15151f;
+
+            border: 1px solid #252535;
+
+            border-radius: 14px;
+
+            overflow: hidden;
+
+            transition: 0.3s;
+
+            position: relative;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-8px);
+
+            border-color: #ff3158;
+
+            box-shadow:
+                0 15px 35px rgba(0,0,0,0.4);
+        }
+
+        .poster {
+            height: 270px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 110px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #302030,
+                    #171721
+                );
+        }
+
+        .movie-info {
+            padding: 16px;
+        }
+
+        .movie-info h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .movie-info p {
+            color: #999;
+
+            font-size: 14px;
+
+            margin-bottom: 12px;
+        }
+
+        .movie-meta {
+            display: flex;
+
+            justify-content: space-between;
+
+            color: #aaa;
+
+            font-size: 13px;
+
+            margin-bottom: 15px;
+        }
+
+        .rating {
+            color: #ffd43b;
+        }
+
+        .details-btn {
+            width: 100%;
+
+            padding: 10px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            background: #ff3158;
+
+            color: white;
+
+            cursor: pointer;
+        }
+
+        .details-btn:hover {
+            background: #e52248;
+        }
+
+        /* ================= FAVORITE ================= */
+
+        .favorite {
+            position: absolute;
+
+            right: 12px;
+            top: 12px;
+
+            width: 40px;
+            height: 40px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background: rgba(0,0,0,0.7);
+
+            color: white;
+
+            font-size: 22px;
+
+            cursor: pointer;
+        }
+
+        .favorite.liked {
+            color: #ff3158;
+        }
+
+        /* ================= MODAL ================= */
+
+        .modal {
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(0,0,0,0.8);
+
+            align-items: center;
+
+            justify-content: center;
+
+            z-index: 500;
+        }
+
+        .modal-content {
+            width: 520px;
+            max-width: 90%;
+
+            max-height: 85vh;
+
+            overflow-y: auto;
+
+            background: #181822;
+
+            border: 1px solid #333346;
+
+            border-radius: 15px;
+
+            padding: 30px;
+
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+
+            right: 20px;
+            top: 15px;
+
+            font-size: 30px;
+
+            cursor: pointer;
+
+            color: #aaa;
+        }
+
+        .close:hover {
+            color: white;
+        }
+
+        .modal-poster {
+            text-align: center;
+
+            font-size: 100px;
+
+            margin-bottom: 10px;
+        }
+
+        .modal-content h2 {
+            color: #ff3158;
+
+            margin-bottom: 12px;
+        }
+
+        .modal-content p {
+            color: #bbb;
+
+            line-height: 1.7;
+
+            margin-bottom: 15px;
+        }
+
+        .trailer {
+            display: inline-block;
+
+            padding: 12px 22px;
+
+            background: #ff3158;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 25px;
+
+            cursor: pointer;
+
+            margin-top: 10px;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #12121c;
+
+            border-top: 1px solid #252536;
+
+            padding: 40px 8%;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            flex-wrap: wrap;
+
+            gap: 30px;
+        }
+
+        footer h2 {
+            color: #ff3158;
+
+            margin-bottom: 10px;
+        }
+
+        footer p {
+            color: #888;
+
+            max-width: 400px;
+
+            line-height: 1.6;
+        }
+
+        .social {
+            display: flex;
+
+            gap: 12px;
+
+            font-size: 25px;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 700px) {
+
+            nav {
+                padding: 0 15px;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .hero {
+                text-align: center;
+
+                padding: 45px 20px;
+
+                flex-direction: column;
+            }
+
+            .hero-content h1 {
+                font-size: 40px;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-movie {
+                margin: 30px 0 0;
+
+                font-size: 120px;
+            }
+
+            .movie-grid {
+                grid-template-columns:
+                    repeat(
+                        auto-fit,
+                        minmax(170px, 1fr)
+                    );
+            }
+
+            .poster {
+                height: 220px;
+                font-size: 80px;
+            }
+
+            footer {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <div class="logo">
+            🎬 Movie<span>Verse</span>
+        </div>
+
+
+        <ul>
+
+            <li>
+                <a href="#home">Home</a>
+            </li>
+
+            <li>
+                <a href="#movies">Movies</a>
+            </li>
+
+            <li>
+                <a href="#genres">Genres</a>
+            </li>
+
+            <li>
+                <a href="#about">About</a>
+            </li>
+
+        </ul>
+
+
+        <button
+            class="login"
+            onclick="loginMessage()">
+
+            Login
+
+        </button>
+
+    </nav>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section
+        class="hero"
+        id="home">
+
+        <div class="hero-content">
+
+            <div class="small-title">
+                WELCOME TO MOVIEVERSE
+            </div>
+
+            <h1>
+                Your world of
+                <span>movies</span>
+            </h1>
+
+            <p>
+                Explore exciting movies, discover new
+                favorites, check ratings and find your
+                next movie to watch.
+            </p>
+
+            <div class="hero-buttons">
+
+                <button
+                    class="watch-btn"
+                    onclick="scrollToMovies()">
+
+                    ▶ Explore Movies
+
+                </button>
+
+
+                <button
+                    class="more-btn"
+                    onclick="showTrending()">
+
+                    🔥 Trending
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-movie">
+            🎬
+        </div>
+
+    </section>
+
+
+    <!-- ================= SEARCH ================= -->
+
+    <section class="search-section">
+
+        <h2>
+            🔍 Find Your Movie
+        </h2>
+
+        <input
+            type="text"
+            id="search"
+            class="search"
+            placeholder="Search movie name..."
+            onkeyup="searchMovies()">
+
+    </section>
+
+
+    <!-- ================= GENRES ================= -->
+
+    <section
+        class="genres"
+        id="genres">
+
+        <h2>
+            🎭 Browse Genres
+        </h2>
+
+
+        <div class="genre-list">
+
+            <button
+                class="genre active"
+                onclick="filterMovies('all', this)">
+                All
+            </button>
+
+            <button
+                class="genre"
+                onclick="filterMovies('action', this)">
+                🔥 Action
+            </button>
+
+            <button
+                class="genre"
+                onclick="filterMovies('comedy', this)">
+                😂 Comedy
+            </button>
+
+            <button
+                class="genre"
+                onclick="filterMovies('scifi', this)">
+                🚀 Sci-Fi
+            </button>
+
+            <button
+                class="genre"
+                onclick="filterMovies('horror', this)">
+                👻 Horror
+            </button>
+
+            <button
+                class="genre"
+                onclick="filterMovies('animation', this)">
+                🧸 Animation
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= MOVIES ================= -->
+
+    <section
+        class="movies"
+        id="movies">
+
+        <h2>
+            ⭐ Popular Movies
+        </h2>
+
+
+        <div
+            class="movie-grid"
+            id="movieGrid">
+
+
+            <!-- MOVIE 1 -->
+
+            <div
+                class="movie-card"
+                data-name="galaxy warriors"
+                data-genre="action scifi">
+
+                <button
+                    class="favorite"
+                    onclick="favorite(this)">
+                    ♡
+                </button>
+
+                <div class="poster">
+                    🚀
+                </div>
+
+                <div class="movie-info">
+
+                    <h3>
+                        Galaxy Warriors
+                    </h3>
+
+                    <p>
+                        Action • Sci-Fi
+                    </p>
+
+                    <div class="movie-meta">
+
+                        <span>
+                            2026
+                        </span>
+
+                        <span class="rating">
+                            ⭐ 4.9
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="showMovie(
+                        'Galaxy Warriors',
+                        '🚀',
+                        'Action / Sci-Fi',
+                        'A group of space explorers must protect the galaxy from a mysterious enemy.'
+                        )">
+
+                        View Details
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- MOVIE 2 -->
+
+            <div
+                class="movie-card"
+                data-name="funny friends"
+                data-genre="comedy">
+
+                <button
+                    class="favorite"
+                    onclick="favorite(this)">
+                    ♡
+                </button>
+
+                <div class="poster">
+                    😂
+                </div>
+
+                <div class="movie-info">
+
+                    <h3>
+                        Funny Friends
+                    </h3>
+
+                    <p>
+                        Comedy
+                    </p>
+
+                    <div class="movie-meta">
+
+                        <span>
+                            2025
+                        </span>
+
+                        <span class="rating">
+                            ⭐ 4.7
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="showMovie(
+                        'Funny Friends',
+                        '😂',
+                        'Comedy',
+                        'Four best friends go on a crazy road trip filled with unexpected adventures.'
+                        )">
+
+                        View Details
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- MOVIE 3 -->
+
+            <div
+                class="movie-card"
+                data-name="dark night"
+                data-genre="action horror">
+
+                <button
+                    class="favorite"
+                    onclick="favorite(this)">
+                    ♡
+                </button>
+
+                <div class="poster">
+                    🌑
+                </div>
+
+                <div class="movie-info">
+
+                    <h3>
+                        Dark Night
+                    </h3>
+
+                    <p>
+                        Action • Horror
+                    </p>
+
+                    <div class="movie-meta">
+
+                        <span>
+                            2025
+                        </span>
+
+                        <span class="rating">
+                            ⭐ 4.6
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="showMovie(
+                        'Dark Night',
+                        '🌑',
+                        'Action / Horror',
+                        'A mysterious town becomes trapped in darkness when an ancient secret returns.'
+                        )">
+
+                        View Details
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- MOVIE 4 -->
+
+            <div
+                class="movie-card"
+                data-name="robot world"
+                data-genre="scifi animation">
+
+                <button
+                    class="favorite"
+                    onclick="favorite(this)">
+                    ♡
+                </button>
+
+                <div class="poster">
+                    🤖
+                </div>
+
+                <div class="movie-info">
+
+                    <h3>
+                        Robot World
+                    </h3>
+
+                    <p>
+                        Sci-Fi • Animation
+                    </p>
+
+                    <div class="movie-meta">
+
+                        <span>
+                            2026
+                        </span>
+
+                        <span class="rating">
+                            ⭐ 4.8
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="showMovie(
+                        'Robot World',
+                        '🤖',
+                        'Sci-Fi / Animation',
+                        'A young robot discovers a hidden world and begins an incredible journey.'
+                        )">
+
+                        View Details
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- MOVIE 5 -->
+
+            <div
+                class="movie-card"
+                data-name="haunted house"
+                data-genre="horror">
+
+                <button
+                    class="favorite"
+                    onclick="favorite(this)">
+                    ♡
+                </button>
+
+                <div class="poster">
+                    👻
+                </div>
+
+                <div class="movie-info">
+
+                    <h3>
+                        Haunted House
+                    </h3>
+
+                    <p>
+                        Horror
+                    </p>
+
+                    <div class="movie-meta">
+
+                        <span>
+                            2024
+                        </span>
+
+                        <span class="rating">
+                            ⭐ 4.5
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="showMovie(
+                        'Haunted House',
+                        '👻',
+                        'Horror',
+                        'A group of friends enters an abandoned house where strange things begin to happen.'
+                        )">
+
+                        View Details
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- MOVIE 6 -->
+
+            <div
+                class="movie-card"
+                data-name="super hero"
+                data-genre="action">
+
+                <button
+                    class="favorite"
+                    onclick="favorite(this)">
+                    ♡
+                </button>
+
+                <div class="poster">
+                    🦸
+                </div>
+
+                <div class="movie-info">
+
+                    <h3>
+                        Super Hero
+                    </h3>
+
+                    <p>
+                        Action
+                    </p>
+
+                    <div class="movie-meta">
+
+                        <span>
+                            2026
+                        </span>
+
+                        <span class="rating">
+                            ⭐ 4.9
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="showMovie(
+                        'Super Hero',
+                        '🦸',
+                        'Action',
+                        'A young hero discovers incredible powers and must use them to save the city.'
+                        )">
+
+                        View Details
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- MOVIE 7 -->
+
+            <div
+                class="movie-card"
+                data-name="space adventure"
+                data-genre="scifi">
+
+                <button
+                    class="favorite"
+                    onclick="favorite(this)">
+                    ♡
+                </button>
+
+                <div class="poster">
+                    🌌
+                </div>
+
+                <div class="movie-info">
+
+                    <h3>
+                        Space Adventure
+                    </h3>
+
+                    <p>
+                        Sci-Fi
+                    </p>
+
+                    <div class="movie-meta">
+
+                        <span>
+                            2025
+                        </span>
+
+                        <span class="rating">
+                            ⭐ 4.7
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="showMovie(
+                        'Space Adventure',
+                        '🌌',
+                        'Sci-Fi',
+                        'A team of astronauts travels beyond the known universe to discover a new planet.'
+                        )">
+
+                        View Details
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- MOVIE 8 -->
+
+            <div
+                class="movie-card"
+                data-name="funny family"
+                data-genre="comedy animation">
+
+                <button
+                    class="favorite"
+                    onclick="favorite(this)">
+                    ♡
+                </button>
+
+                <div class="poster">
+                    🐼
+                </div>
+
+                <div class="movie-info">
+
+                    <h3>
+                        Funny Family
+                    </h3>
+
+                    <p>
+                        Comedy • Animation
+                    </p>
+
+                    <div class="movie-meta">
+
+                        <span>
+                            2024
+                        </span>
+
+                        <span class="rating">
+                            ⭐ 4.6
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="details-btn"
+                        onclick="showMovie(
+                        'Funny Family',
+                        '🐼',
+                        'Comedy / Animation',
+                        'A funny family gets into hilarious situations during their vacation.'
+                        )">
+
+                        View Details
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= MODAL ================= -->
+
+    <div
+        class="modal"
+        id="movieModal">
+
+        <div class="modal-content">
+
+            <span
+                class="close"
+                onclick="closeModal()">
+                ×
+            </span>
+
+
+            <div
+                class="modal-poster"
+                id="modalPoster">
+            </div>
+
+
+            <h2 id="modalTitle"></h2>
+
+
+            <p>
+                <strong>Genre:</strong>
+                <span id="modalGenre"></span>
+            </p>
+
+
+            <p id="modalDescription"></p>
+
+
+            <button
+                class="trailer"
+                onclick="watchTrailer()">
+
+                ▶ Watch Trailer
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer id="about">
+
+        <div>
+
+            <h2>
+                🎬 MovieVerse
+            </h2>
+
+            <p>
+                Discover movies, explore genres,
+                check ratings and find something
+                exciting to watch.
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                Follow Us
+            </h3>
+
+            <div class="social">
+
+                <span>📘</span>
+                <span>📸</span>
+                <span>▶️</span>
+                <span>🐦</span>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        /* ================= SEARCH ================= */
+
+        function searchMovies() {
+
+            const search =
+                document
+                .getElementById("search")
+                .value
+                .toLowerCase();
+
+
+            const movies =
+                document.querySelectorAll(
+                    ".movie-card"
+                );
+
+
+            movies.forEach(function(movie) {
+
+                const name =
+                    movie
+                    .getAttribute("data-name")
+                    .toLowerCase();
+
+
+                if (name.includes(search)) {
+
+                    movie.style.display =
+                        "block";
+
+                } else {
+
+                    movie.style.display =
+                        "none";
+
+                }
+
+            });
+
+        }
+
+
+        /* ================= FILTER ================= */
+
+        function filterMovies(
+            genre,
+            button
+        ) {
+
+            document
+                .querySelectorAll(".genre")
+                .forEach(function(btn) {
+
+                    btn.classList.remove(
+                        "active"
+                    );
+
+                });
+
+
+            button.classList.add("active");
+
+
+            const movies =
+                document.querySelectorAll(
+                    ".movie-card"
+                );
+
+
+            movies.forEach(function(movie) {
+
+                const movieGenres =
+                    movie.getAttribute(
+                        "data-genre"
+                    );
+
+
+                if (
+                    genre === "all" ||
+                    movieGenres.includes(genre)
+                ) {
+
+                    movie.style.display =
+                        "block";
+
+                } else {
+
+                    movie.style.display =
+                        "none";
+
+                }
+
+            });
+
+        }
+
+
+        /* ================= FAVORITE ================= */
+
+        function favorite(button) {
+
+            button.classList.toggle(
+                "liked"
+            );
+
+
+            if (
+                button.classList.contains(
+                    "liked"
+                )
+            ) {
+
+                button.innerHTML = "♥";
+
+            } else {
+
+                button.innerHTML = "♡";
+
+            }
+
+        }
+
+
+        /* ================= MOVIE DETAILS ================= */
+
+        function showMovie(
+            title,
+            poster,
+            genre,
+            description
+        ) {
+
+            document
+                .getElementById("modalTitle")
+                .innerText = title;
+
+
+            document
+                .getElementById("modalPoster")
+                .innerText = poster;
+
+
+            document
+                .getElementById("modalGenre")
+                .innerText = genre;
+
+
+            document
+                .getElementById(
+                    "modalDescription"
+                )
+                .innerText = description;
+
+
+            document
+                .getElementById("movieModal")
+                .style.display = "flex";
+
+        }
+
+
+        /* ================= CLOSE MODAL ================= */
+
+        function closeModal() {
+
+            document
+                .getElementById("movieModal")
+                .style.display = "none";
+
+        }
+
+
+        /* ================= OUTSIDE MODAL ================= */
+
+        window.onclick = function(event) {
+
+            const modal =
+                document.getElementById(
+                    "movieModal"
+                );
+
+
+            if (event.target === modal) {
+
+                modal.style.display =
+                    "none";
+
+            }
+
+        };
+
+
+        /* ================= TRAILER ================= */
+
+        function watchTrailer() {
+
+            alert(
+                "🎬 Trailer will be available soon!"
+            );
+
+        }
+
+
+        /* ================= LOGIN ================= */
+
+        function loginMessage() {
+
+            alert(
+                "👤 Login feature coming soon!"
+            );
+
+        }
+
+
+        /* ================= TRENDING ================= */
+
+        function showTrending() {
+
+            alert(
+                "🔥 Trending movies: Galaxy Warriors, Super Hero and Robot World!"
+            );
+
+        }
+
+
+        /* ================= SCROLL ================= */
+
+        function scrollToMovies() {
+
+            document
+                .getElementById("movies")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
+
+        }
+
+    </script>
+
+</body>
+
+</html>
