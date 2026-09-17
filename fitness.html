@@ -1,0 +1,1060 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MuscleGuard AI - Athlete Fitness</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f4f7fb;
+    color: #172033;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 240px;
+    height: 100vh;
+    background: #101828;
+    color: white;
+    padding: 25px 15px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.logo span {
+    color: #43d17c;
+}
+
+.sidebar button {
+    width: 100%;
+    padding: 14px;
+    margin: 5px 0;
+    border: none;
+    background: transparent;
+    color: #d0d5dd;
+    text-align: left;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.sidebar button:hover,
+.sidebar button.active {
+    background: #1d2939;
+    color: #43d17c;
+}
+
+/* MAIN */
+
+.main {
+    margin-left: 240px;
+    padding: 25px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.topbar h1 {
+    font-size: 28px;
+}
+
+.profile {
+    background: white;
+    padding: 10px 18px;
+    border-radius: 20px;
+    box-shadow: 0 2px 10px #00000010;
+}
+
+/* SECTIONS */
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+/* CARDS */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px #0000000c;
+}
+
+.card h3 {
+    color: #667085;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.card .number {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.green {
+    color: #20a85a;
+}
+
+.orange {
+    color: #f79009;
+}
+
+.blue {
+    color: #1570ef;
+}
+
+.red {
+    color: #d92d20;
+}
+
+/* GRID */
+
+.grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.box {
+    background: white;
+    padding: 22px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px #0000000c;
+}
+
+.box h2 {
+    margin-bottom: 18px;
+}
+
+/* PROGRESS */
+
+.progress {
+    height: 12px;
+    background: #eaecf0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px 0 18px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 70%;
+    background: #43d17c;
+    border-radius: 10px;
+}
+
+/* BUTTON */
+
+.btn {
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #20a85a;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background: #168747;
+}
+
+/* FOOD */
+
+.food-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.food {
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 3px 12px #0000000c;
+}
+
+.food-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+
+.food h3 {
+    margin-bottom: 8px;
+}
+
+.food p {
+    color: #667085;
+    line-height: 1.5;
+}
+
+/* TABLE */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 13px;
+    border-bottom: 1px solid #eaecf0;
+    text-align: left;
+}
+
+th {
+    color: #667085;
+}
+
+/* ALERT */
+
+.alert {
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    background: #fff4e5;
+    color: #b54708;
+}
+
+.success {
+    background: #ecfdf3;
+    color: #027a48;
+}
+
+/* FORM */
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+}
+
+/* AI */
+
+.ai-box {
+    background: linear-gradient(135deg, #101828, #1d2939);
+    color: white;
+    padding: 25px;
+    border-radius: 16px;
+}
+
+.ai-box h2 {
+    color: #43d17c;
+    margin-bottom: 15px;
+}
+
+.ai-message {
+    background: #ffffff12;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px 0;
+}
+
+/* MOBILE */
+
+@media(max-width: 900px) {
+
+    .sidebar {
+        width: 190px;
+    }
+
+    .main {
+        margin-left: 190px;
+    }
+
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .food-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 600px) {
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+
+    .main {
+        margin-left: 0;
+    }
+
+    .cards,
+    .food-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        💪 Muscle<span>Guard</span>
+    </div>
+
+    <button class="active" onclick="showPage('dashboard', this)">
+        🏠 Dashboard
+    </button>
+
+    <button onclick="showPage('training', this)">
+        🏃 Training
+    </button>
+
+    <button onclick="showPage('nutrition', this)">
+        🥗 Nutrition
+    </button>
+
+    <button onclick="showPage('hydration', this)">
+        💧 Hydration
+    </button>
+
+    <button onclick="showPage('recovery', this)">
+        😴 Recovery
+    </button>
+
+    <button onclick="showPage('body', this)">
+        💪 Body Composition
+    </button>
+
+    <button onclick="showPage('coach', this)">
+        🤖 AI Coach
+    </button>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <div class="topbar">
+        <div>
+            <h1>Good Morning, Athlete 👋</h1>
+            <p>Your performance and muscle health overview</p>
+        </div>
+
+        <div class="profile">
+            👤 Athlete
+        </div>
+    </div>
+
+
+    <!-- DASHBOARD -->
+
+    <section id="dashboard" class="page active">
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Weekly Distance</h3>
+                <div class="number green">86.4 km</div>
+                <p>+8% this week</p>
+            </div>
+
+            <div class="card">
+                <h3>Muscle Mass</h3>
+                <div class="number blue">42.8 kg</div>
+                <p>Stable</p>
+            </div>
+
+            <div class="card">
+                <h3>Daily Protein</h3>
+                <div class="number orange">112 g</div>
+                <p>Target: 125 g</p>
+            </div>
+
+            <div class="card">
+                <h3>Recovery Score</h3>
+                <div class="number green">82%</div>
+                <p>Good recovery</p>
+            </div>
+
+        </div>
+
+
+        <div class="grid">
+
+            <div class="box">
+
+                <h2>Today's Training</h2>
+
+                <table>
+
+                    <tr>
+                        <th>Activity</th>
+                        <th>Distance</th>
+                        <th>Duration</th>
+                    </tr>
+
+                    <tr>
+                        <td>Long Run</td>
+                        <td>18 km</td>
+                        <td>1h 42m</td>
+                    </tr>
+
+                    <tr>
+                        <td>Recovery Walk</td>
+                        <td>3 km</td>
+                        <td>35 min</td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+
+            <div class="box">
+
+                <h2>Hydration</h2>
+
+                <p>Daily target</p>
+
+                <h2>2.8 L / 3.5 L</h2>
+
+                <div class="progress">
+                    <div class="progress-bar" style="width:80%"></div>
+                </div>
+
+                <button class="btn" onclick="addWater()">
+                    + Add 250 ml
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="alert">
+            ⚠️ <b>Training Load Notice:</b>
+            Your running volume has increased this week.
+            Pay attention to recovery, nutrition and sleep.
+        </div>
+
+
+        <div class="ai-box">
+
+            <h2>🤖 AI Coach Recommendation</h2>
+
+            <div class="ai-message">
+                🍗 Your protein intake is slightly below today's target.
+                Consider adding a protein-rich recovery meal.
+            </div>
+
+            <div class="ai-message">
+                💧 You still have approximately 700 ml remaining
+                toward your current hydration target.
+            </div>
+
+            <div class="ai-message">
+                😴 Aim for adequate sleep tonight to support recovery.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- TRAINING -->
+
+    <section id="training" class="page">
+
+        <h1>🏃 Training Tracker</h1>
+        <br>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Today's Distance</h3>
+                <div class="number">18 km</div>
+            </div>
+
+            <div class="card">
+                <h3>Average Pace</h3>
+                <div class="number">5:40 /km</div>
+            </div>
+
+            <div class="card">
+                <h3>Weekly Distance</h3>
+                <div class="number">86.4 km</div>
+            </div>
+
+            <div class="card">
+                <h3>Training Load</h3>
+                <div class="number orange">High</div>
+            </div>
+
+        </div>
+
+
+        <div class="box">
+
+            <h2>Log Your Run</h2>
+
+            <div class="form-group">
+                <label>Distance (km)</label>
+                <input type="number" id="distance" placeholder="Example: 20">
+            </div>
+
+            <div class="form-group">
+                <label>Duration (minutes)</label>
+                <input type="number" id="duration" placeholder="Example: 120">
+            </div>
+
+            <button class="btn" onclick="logRun()">
+                Save Run
+            </button>
+
+            <p id="runResult"></p>
+
+        </div>
+
+    </section>
+
+
+    <!-- NUTRITION -->
+
+    <section id="nutrition" class="page">
+
+        <h1>🥗 Nutrition Planner</h1>
+        <br>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Protein Target</h3>
+                <div class="number">125 g</div>
+            </div>
+
+            <div class="card">
+                <h3>Carbohydrates</h3>
+                <div class="number">320 g</div>
+            </div>
+
+            <div class="card">
+                <h3>Healthy Fats</h3>
+                <div class="number">70 g</div>
+            </div>
+
+            <div class="card">
+                <h3>Calories</h3>
+                <div class="number">2,800</div>
+            </div>
+
+        </div>
+
+
+        <h2>Recommended Foods</h2>
+        <br>
+
+        <div class="food-grid">
+
+            <div class="food">
+                <div class="food-icon">🥚</div>
+                <h3>Eggs</h3>
+                <p>
+                    Protein-rich food that can be included
+                    in meals throughout the day.
+                </p>
+            </div>
+
+            <div class="food">
+                <div class="food-icon">🍗</div>
+                <h3>Chicken</h3>
+                <p>
+                    Lean protein source suitable for
+                    muscle-supporting meals.
+                </p>
+            </div>
+
+            <div class="food">
+                <div class="food-icon">🍚</div>
+                <h3>Rice</h3>
+                <p>
+                    Carbohydrate source that can help
+                    support high-volume endurance training.
+                </p>
+            </div>
+
+            <div class="food">
+                <div class="food-icon">🍌</div>
+                <h3>Banana</h3>
+                <p>
+                    Convenient carbohydrate-rich snack
+                    for athletes.
+                </p>
+            </div>
+
+            <div class="food">
+                <div class="food-icon">🥛</div>
+                <h3>Milk</h3>
+                <p>
+                    Provides protein and other nutrients
+                    useful as part of a balanced diet.
+                </p>
+            </div>
+
+            <div class="food">
+                <div class="food-icon">🥜</div>
+                <h3>Nuts</h3>
+                <p>
+                    Provides healthy fats and additional
+                    nutrients.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HYDRATION -->
+
+    <section id="hydration" class="page">
+
+        <h1>💧 Hydration Tracker</h1>
+        <br>
+
+        <div class="box">
+
+            <h2>Today's Hydration</h2>
+
+            <h1 id="waterAmount">2.8 L</h1>
+
+            <div class="progress">
+                <div id="waterBar"
+                     class="progress-bar"
+                     style="width:80%">
+                </div>
+            </div>
+
+            <p>Goal: 3.5 L</p>
+
+            <br>
+
+            <button class="btn" onclick="addWater()">
+                💧 Add 250 ml
+            </button>
+
+            <br><br>
+
+            <p id="waterMessage">
+                You are doing well. Keep hydrating.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- RECOVERY -->
+
+    <section id="recovery" class="page">
+
+        <h1>😴 Recovery Coach</h1>
+        <br>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Sleep</h3>
+                <div class="number green">7.5 h</div>
+            </div>
+
+            <div class="card">
+                <h3>Recovery</h3>
+                <div class="number green">82%</div>
+            </div>
+
+            <div class="card">
+                <h3>Rest Day</h3>
+                <div class="number blue">Tomorrow</div>
+            </div>
+
+            <div class="card">
+                <h3>Muscle Soreness</h3>
+                <div class="number orange">Low</div>
+            </div>
+
+        </div>
+
+
+        <div class="box">
+
+            <h2>Recovery Recommendations</h2>
+
+            <br>
+
+            <p>🧘 10–15 minutes of gentle stretching</p>
+            <br>
+
+            <p>😴 Prioritize adequate sleep</p>
+            <br>
+
+            <p>🥗 Have a balanced post-run meal</p>
+            <br>
+
+            <p>💧 Replace fluids after long training sessions</p>
+            <br>
+
+            <p>🏃 Consider a lighter session if recovery remains poor</p>
+
+        </div>
+
+    </section>
+
+
+    <!-- BODY -->
+
+    <section id="body" class="page">
+
+        <h1>💪 Body Composition</h1>
+        <br>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Weight</h3>
+                <div class="number">62 kg</div>
+            </div>
+
+            <div class="card">
+                <h3>Muscle Mass</h3>
+                <div class="number green">42.8 kg</div>
+            </div>
+
+            <div class="card">
+                <h3>Body Fat</h3>
+                <div class="number">15%</div>
+            </div>
+
+            <div class="card">
+                <h3>Muscle Trend</h3>
+                <div class="number green">Stable</div>
+            </div>
+
+        </div>
+
+
+        <div class="box">
+
+            <h2>Muscle Maintenance Status</h2>
+
+            <br>
+
+            <div class="success">
+                💪 Current measurements show a stable
+                muscle-mass trend.
+            </div>
+
+            <br>
+
+            <h3>Things to monitor</h3>
+
+            <br>
+
+            <p>✓ Weight changes</p>
+            <br>
+
+            <p>✓ Muscle-mass measurements</p>
+            <br>
+
+            <p>✓ Protein intake</p>
+            <br>
+
+            <p>✓ Training volume</p>
+            <br>
+
+            <p>✓ Recovery and sleep</p>
+
+        </div>
+
+    </section>
+
+
+    <!-- AI COACH -->
+
+    <section id="coach" class="page">
+
+        <div class="ai-box">
+
+            <h1>🤖 AI Athlete Coach</h1>
+
+            <br>
+
+            <p>
+                Your personal training, nutrition and recovery assistant.
+            </p>
+
+            <br>
+
+            <div class="ai-message">
+                🏃 <b>Training:</b><br>
+                Your current weekly running volume is high.
+                Monitor how you feel and allow adequate recovery.
+            </div>
+
+            <div class="ai-message">
+                🍗 <b>Nutrition:</b><br>
+                Your logged protein intake is below today's
+                target. Consider a balanced protein-containing meal.
+            </div>
+
+            <div class="ai-message">
+                💧 <b>Hydration:</b><br>
+                Continue drinking fluids throughout the day,
+                especially around long training sessions.
+            </div>
+
+            <div class="ai-message">
+                😴 <b>Recovery:</b><br>
+                Your recovery score is currently 82%.
+                Prioritize sleep and recovery after demanding sessions.
+            </div>
+
+        </div>
+
+        <br>
+
+        <div class="box">
+
+            <h2>Ask Your Coach</h2>
+
+            <br>
+
+            <input
+                type="text"
+                id="question"
+                placeholder="Example: What should I eat after a long run?"
+                style="width:100%;padding:14px;border:1px solid #ddd;border-radius:8px;"
+            >
+
+            <br><br>
+
+            <button class="btn" onclick="askCoach()">
+                Ask AI Coach
+            </button>
+
+            <br><br>
+
+            <p id="coachAnswer"></p>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+/* PAGE NAVIGATION */
+
+function showPage(pageId, button) {
+
+    let pages = document.querySelectorAll(".page");
+
+    pages.forEach(function(page) {
+        page.classList.remove("active");
+    });
+
+    document.getElementById(pageId).classList.add("active");
+
+    let buttons = document.querySelectorAll(".sidebar button");
+
+    buttons.forEach(function(btn) {
+        btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+}
+
+
+/* WATER TRACKER */
+
+let water = 2.8;
+let waterGoal = 3.5;
+
+function addWater() {
+
+    water += 0.25;
+
+    if (water > waterGoal) {
+        water = waterGoal;
+    }
+
+    document.getElementById("waterAmount").innerText =
+        water.toFixed(2) + " L";
+
+    let percentage = (water / waterGoal) * 100;
+
+    document.getElementById("waterBar").style.width =
+        percentage + "%";
+
+    if (water >= waterGoal) {
+
+        document.getElementById("waterMessage").innerText =
+            "🎉 Hydration goal completed!";
+
+    } else {
+
+        let remaining = waterGoal - water;
+
+        document.getElementById("waterMessage").innerText =
+            "Approximately " +
+            remaining.toFixed(2) +
+            " L remaining.";
+    }
+}
+
+
+/* RUN TRACKER */
+
+function logRun() {
+
+    let distance =
+        document.getElementById("distance").value;
+
+    let duration =
+        document.getElementById("duration").value;
+
+    if (distance === "" || duration === "") {
+
+        document.getElementById("runResult").innerText =
+            "Please enter distance and duration.";
+
+        return;
+    }
+
+    document.getElementById("runResult").innerText =
+        "✅ Run saved: " +
+        distance +
+        " km in " +
+        duration +
+        " minutes.";
+
+}
+
+
+/* AI COACH */
+
+function askCoach() {
+
+    let question =
+        document.getElementById("question").value.toLowerCase();
+
+    let answer =
+        document.getElementById("coachAnswer");
+
+    if (question.includes("eat") ||
+        question.includes("food") ||
+        question.includes("nutrition")) {
+
+        answer.innerText =
+            "🥗 After a long run, consider a balanced meal containing carbohydrates, protein and fluids.";
+
+    }
+
+    else if (question.includes("water") ||
+             question.includes("hydration")) {
+
+        answer.innerText =
+            "💧 Keep fluids available throughout the day and pay attention to fluid needs around long training sessions.";
+
+    }
+
+    else if (question.includes("sleep") ||
+             question.includes("recovery")) {
+
+        answer.innerText =
+            "😴 Prioritize sufficient sleep and recovery after demanding training sessions.";
+
+    }
+
+    else if (question.includes("muscle") ||
+             question.includes("protein")) {
+
+        answer.innerText =
+            "💪 Include adequate protein in a balanced diet and monitor your training, recovery and body-composition trends.";
+
+    }
+
+    else {
+
+        answer.innerText =
+            "🤖 Try asking about nutrition, protein, hydration, training or recovery.";
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
+
