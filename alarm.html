@@ -1,0 +1,443 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alarm Clock</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #141e30, #243b55);
+            color: white;
+        }
+
+        .alarm-container {
+            width: 380px;
+            padding: 35px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .clock {
+            font-size: 45px;
+            font-weight: bold;
+            margin: 20px 0;
+            letter-spacing: 2px;
+        }
+
+        .date {
+            font-size: 15px;
+            opacity: 0.8;
+            margin-bottom: 25px;
+        }
+
+        .set-alarm {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="time"] {
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            outline: none;
+        }
+
+        button {
+            border: none;
+            padding: 12px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .set-btn {
+            background: #00e676;
+            color: #111;
+        }
+
+        .set-btn:hover {
+            background: #00c853;
+            transform: scale(1.05);
+        }
+
+        .cancel-btn {
+            background: #ff5252;
+            color: white;
+            display: none;
+            margin: auto;
+        }
+
+        .cancel-btn:hover {
+            background: #d50000;
+        }
+
+        .alarm-status {
+            margin: 15px 0;
+            font-size: 18px;
+            min-height: 25px;
+        }
+
+        .ringing {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 0, 0, 0.25);
+            border-radius: 15px;
+            animation: pulse 1s infinite;
+        }
+
+        .ringing h2 {
+            margin-bottom: 15px;
+        }
+
+        .stop-btn {
+            background: #ff1744;
+            color: white;
+        }
+
+        .stop-btn:hover {
+            background: #d50000;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.03);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .alarm-icon {
+            font-size: 55px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="alarm-container">
+
+        <div class="alarm-icon">⏰</div>
+
+        <h1>Alarm Clock</h1>
+
+        <div class="clock" id="clock">
+            00:00:00
+        </div>
+
+        <div class="date" id="date">
+            Loading date...
+        </div>
+
+        <div class="set-alarm">
+
+            <input type="time" id="alarmTime">
+
+            <button class="set-btn" onclick="setAlarm()">
+                Set Alarm
+            </button>
+
+        </div>
+
+        <div class="alarm-status" id="alarmStatus">
+            No alarm set
+        </div>
+
+        <button class="cancel-btn" id="cancelBtn" onclick="cancelAlarm()">
+            Cancel Alarm
+        </button>
+
+        <div class="ringing" id="ringing">
+
+            <h2>🔔 ALARM RINGING!</h2>
+
+            <p>Wake up! Your alarm time has arrived.</p>
+
+            <br>
+
+            <button class="stop-btn" onclick="stopAlarm()">
+                Stop Alarm
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        let alarmTime = null;
+        let alarmActive = false;
+        let alarmSound = null;
+
+        // Create alarm sound using Web Audio API
+        function createAlarmSound() {
+
+            const AudioContext =
+                window.AudioContext || window.webkitAudioContext;
+
+            if (!AudioContext) {
+                return null;
+            }
+
+            const audioContext = new AudioContext();
+
+            function beep() {
+
+                if (!alarmActive) {
+                    return;
+                }
+
+                const oscillator =
+                    audioContext.createOscillator();
+
+                const gain =
+                    audioContext.createGain();
+
+                oscillator.connect(gain);
+                gain.connect(audioContext.destination);
+
+                oscillator.frequency.value = 800;
+                oscillator.type = "sine";
+
+                gain.gain.setValueAtTime(
+                    0.4,
+                    audioContext.currentTime
+                );
+
+                oscillator.start();
+
+                oscillator.stop(
+                    audioContext.currentTime + 0.5
+                );
+
+                setTimeout(beep, 1000);
+            }
+
+            return {
+                start: function () {
+
+                    if (audioContext.state === "suspended") {
+                        audioContext.resume();
+                    }
+
+                    beep();
+                },
+
+                stop: function () {
+                    alarmActive = false;
+                }
+            };
+        }
+
+
+        // Update clock
+        function updateClock() {
+
+            const now = new Date();
+
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+
+            const formattedHours =
+                String(hours).padStart(2, "0");
+
+            const formattedMinutes =
+                String(minutes).padStart(2, "0");
+
+            const formattedSeconds =
+                String(seconds).padStart(2, "0");
+
+            document.getElementById("clock").textContent =
+                `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+
+
+            const options = {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+            };
+
+            document.getElementById("date").textContent =
+                now.toLocaleDateString("en-US", options);
+
+
+            // Check alarm
+            if (alarmActive && alarmTime) {
+
+                const currentTime =
+                    `${formattedHours}:${formattedMinutes}`;
+
+                if (currentTime === alarmTime) {
+                    ringAlarm();
+                }
+            }
+        }
+
+
+        // Set alarm
+        function setAlarm() {
+
+            const input =
+                document.getElementById("alarmTime").value;
+
+            if (input === "") {
+
+                alert("Please select an alarm time.");
+
+                return;
+            }
+
+            alarmTime = input;
+            alarmActive = true;
+
+            document.getElementById("alarmStatus").textContent =
+                "⏰ Alarm set for " + formatTime(input);
+
+            document.getElementById("cancelBtn").style.display =
+                "block";
+
+            document.getElementById("ringing").style.display =
+                "none";
+
+            // Create sound after user interaction
+            alarmSound = createAlarmSound();
+
+            alert(
+                "Alarm successfully set for " +
+                formatTime(input)
+            );
+        }
+
+
+        // Format time
+        function formatTime(time) {
+
+            let [hours, minutes] = time.split(":");
+
+            hours = parseInt(hours);
+
+            const ampm = hours >= 12 ? "PM" : "AM";
+
+            hours = hours % 12;
+
+            if (hours === 0) {
+                hours = 12;
+            }
+
+            return `${hours}:${minutes} ${ampm}`;
+        }
+
+
+        // Ring alarm
+        function ringAlarm() {
+
+            if (!alarmActive) {
+                return;
+            }
+
+            document.getElementById("ringing").style.display =
+                "block";
+
+            document.getElementById("alarmStatus").textContent =
+                "🔔 Your alarm is ringing!";
+
+            // Prevent repeated triggering
+            alarmActive = false;
+
+            if (alarmSound) {
+                alarmActive = true;
+                alarmSound.start();
+            }
+        }
+
+
+        // Stop alarm
+        function stopAlarm() {
+
+            alarmActive = false;
+
+            if (alarmSound) {
+                alarmSound.stop();
+            }
+
+            document.getElementById("ringing").style.display =
+                "none";
+
+            document.getElementById("alarmStatus").textContent =
+                "Alarm stopped.";
+
+            document.getElementById("cancelBtn").style.display =
+                "none";
+
+            alarmTime = null;
+        }
+
+
+        // Cancel alarm
+        function cancelAlarm() {
+
+            alarmActive = false;
+
+            if (alarmSound) {
+                alarmSound.stop();
+            }
+
+            alarmTime = null;
+
+            document.getElementById("alarmStatus").textContent =
+                "No alarm set";
+
+            document.getElementById("cancelBtn").style.display =
+                "none";
+
+            document.getElementById("ringing").style.display =
+                "none";
+        }
+
+
+        // Start clock
+        setInterval(updateClock, 1000);
+
+        updateClock();
+
+    </script>
+
+</body>
+</html>
+
