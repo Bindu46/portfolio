@@ -1,179 +1,146 @@
+let transactions = [];
 
-let questions = [
-    {
-        question: "What does HTML stand for?",
-        answers: [
-            "Hyper Text Markup Language",
-            "High Text Machine Language",
-            "Hyperlink Text Markup Language",
-            "Home Tool Markup Language"
-        ],
-        correct: 0
-    },
+let form = document.getElementById("expenseForm");
 
-    {
-        question: "Which language is used to style a webpage?",
-        answers: [
-            "HTML",
-            "CSS",
-            "Java",
-            "Python"
-        ],
-        correct: 1
-    },
+let description = document.getElementById("description");
 
-    {
-        question: "Which language is used to add interactivity to a webpage?",
-        answers: [
-            "HTML",
-            "CSS",
-            "JavaScript",
-            "SQL"
-        ],
-        correct: 2
-    },
+let amount = document.getElementById("amount");
 
-    {
-        question: "Which tag is used to create a paragraph in HTML?",
-        answers: [
-            "<h1>",
-            "<p>",
-            "<div>",
-            "<br>"
-        ],
-        correct: 1
-    },
+let type = document.getElementById("type");
 
-    {
-        question: "Which symbol is used for an ID selector in CSS?",
-        answers: [
-            ".",
-            "#",
-            "*",
-            "@"
-        ],
-        correct: 1
-    }
-];
+let transactionList = document.getElementById("transactionList");
+
+let balance = document.getElementById("balance");
+
+let income = document.getElementById("income");
+
+let expense = document.getElementById("expense");
 
 
-let currentQuestion = 0;
+// Add transaction
 
-let score = 0;
+form.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    let transaction = {
+
+        id: Date.now(),
+
+        description: description.value,
+
+        amount: Number(amount.value),
+
+        type: type.value
+
+    };
+
+    transactions.push(transaction);
+
+    displayTransactions();
+
+    updateSummary();
+
+    form.reset();
+
+});
 
 
-let questionElement = document.getElementById("question");
+// Display transactions
 
-let answerButtons = document.querySelectorAll(".answer");
+function displayTransactions() {
 
-let nextButton = document.getElementById("next");
+    transactionList.innerHTML = "";
 
-let quiz = document.getElementById("quiz");
+    transactions.forEach(function(transaction) {
 
-let result = document.getElementById("result");
+        let li = document.createElement("li");
 
-let scoreElement = document.getElementById("score");
+        li.classList.add(
+            "transaction",
+            transaction.type
+        );
 
-let restartButton = document.getElementById("restart");
+        li.innerHTML = `
 
+            <div class="transaction-info">
 
-// Display question
+                <strong>${transaction.description}</strong>
 
-function showQuestion() {
+                <span>
+                    ${transaction.type === "income"
+                        ? "Income"
+                        : "Expense"}
+                </span>
 
-    let question = questions[currentQuestion];
+            </div>
 
-    questionElement.textContent = question.question;
+            <strong>
+                ${transaction.type === "income" ? "+" : "-"}
+                ₹${transaction.amount}
+            </strong>
 
-    answerButtons.forEach(function(button, index) {
+            <button
+                class="delete-btn"
+                onclick="deleteTransaction(${transaction.id})"
+            >
+                Delete
+            </button>
 
-        button.textContent = question.answers[index];
+        `;
 
-        button.classList.remove("correct");
-        button.classList.remove("wrong");
-
-        button.disabled = false;
+        transactionList.appendChild(li);
 
     });
 
 }
 
 
-// Check answer
+// Update balance and summary
 
-answerButtons.forEach(function(button, index) {
+function updateSummary() {
 
-    button.addEventListener("click", function() {
+    let totalIncome = 0;
 
-        let question = questions[currentQuestion];
+    let totalExpense = 0;
 
-        if (index === question.correct) {
+    transactions.forEach(function(transaction) {
 
-            button.classList.add("correct");
+        if (transaction.type === "income") {
 
-            score++;
+            totalIncome += transaction.amount;
 
         } else {
 
-            button.classList.add("wrong");
-
-            answerButtons[question.correct].classList.add("correct");
+            totalExpense += transaction.amount;
 
         }
 
-        answerButtons.forEach(function(btn) {
+    });
 
-            btn.disabled = true;
+    let totalBalance = totalIncome - totalExpense;
 
-        });
+    income.textContent = "₹" + totalIncome;
+
+    expense.textContent = "₹" + totalExpense;
+
+    balance.textContent = "₹" + totalBalance;
+
+}
+
+
+// Delete transaction
+
+function deleteTransaction(id) {
+
+    transactions = transactions.filter(function(transaction) {
+
+        return transaction.id !== id;
 
     });
 
-});
+    displayTransactions();
 
+    updateSummary();
 
-// Next question
-
-nextButton.addEventListener("click", function() {
-
-    currentQuestion++;
-
-    if (currentQuestion < questions.length) {
-
-        showQuestion();
-
-    } else {
-
-        quiz.style.display = "none";
-
-        result.style.display = "block";
-
-        scoreElement.textContent =
-            "You scored " + score + " out of " + questions.length;
-
-    }
-
-});
-
-
-// Restart quiz
-
-restartButton.addEventListener("click", function() {
-
-    currentQuestion = 0;
-
-    score = 0;
-
-    quiz.style.display = "block";
-
-    result.style.display = "none";
-
-    showQuestion();
-
-});
-
-
-// Start quiz
-
-showQuestion();
-
+}
