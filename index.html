@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,82 +6,168 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Expense Tracker</title>
+    <title>My Portfolio</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <div class="container">
+    <!-- Navigation -->
+    <nav>
+        <h2>My Portfolio</h2>
 
-        <h1>Expense Tracker</h1>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
 
-        <div class="balance-box">
-            <h3>Balance</h3>
-            <h2 id="balance">₹0</h2>
+        <button id="darkMode">🌙</button>
+    </nav>
+
+
+    <!-- Home -->
+    <section id="home" class="home">
+
+        <div class="home-text">
+            <h1>Hello, I'm <span>Bindu</span></h1>
+
+            <h2>Web Developer</h2>
+
+            <p>
+                Welcome to my personal portfolio website.
+                I am learning web development and building
+                interesting projects.
+            </p>
+
+            <a href="#projects" class="btn">View My Projects</a>
         </div>
 
-        <div class="summary">
+    </section>
 
-            <div class="income">
-                <h3>Income</h3>
-                <p id="income">₹0</p>
+
+    <!-- About -->
+    <section id="about">
+
+        <h2 class="title">About Me</h2>
+
+        <div class="about-box">
+
+            <p>
+                Hello! I am a student interested in technology
+                and programming. I enjoy learning HTML, CSS,
+                JavaScript and creating websites.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Skills -->
+    <section id="skills">
+
+        <h2 class="title">My Skills</h2>
+
+        <div class="skills-container">
+
+            <div class="skill">
+                <h3>HTML</h3>
+                <p>Creating webpage structure.</p>
             </div>
 
-            <div class="expense">
-                <h3>Expense</h3>
-                <p id="expense">₹0</p>
+            <div class="skill">
+                <h3>CSS</h3>
+                <p>Designing beautiful webpages.</p>
+            </div>
+
+            <div class="skill">
+                <h3>JavaScript</h3>
+                <p>Adding interaction to websites.</p>
             </div>
 
         </div>
 
-        <h2>Add Transaction</h2>
+    </section>
 
-        <form id="expenseForm">
 
-            <label>Description</label>
+    <!-- Projects -->
+    <section id="projects">
 
-            <input
-                type="text"
-                id="description"
-                placeholder="Enter description"
-                required
-            >
+        <h2 class="title">My Projects</h2>
 
-            <label>Amount</label>
+        <div class="projects-container">
 
-            <input
-                type="number"
-                id="amount"
-                placeholder="Enter amount"
-                required
-            >
+            <div class="project">
+                <h3>Fitness Website</h3>
+                <p>
+                    A website that provides fitness
+                    and workout information.
+                </p>
 
-            <label>Type</label>
+                <button>View Project</button>
+            </div>
 
-            <select id="type">
 
-                <option value="income">Income</option>
+            <div class="project">
+                <h3>Calculator</h3>
+                <p>
+                    A simple calculator created using
+                    HTML, CSS and JavaScript.
+                </p>
 
-                <option value="expense">Expense</option>
+                <button>View Project</button>
+            </div>
 
-            </select>
 
-            <button type="submit">
-                Add Transaction
-            </button>
+            <div class="project">
+                <h3>To-Do List</h3>
+                <p>
+                    A simple task management website.
+                </p>
 
-        </form>
+                <button>View Project</button>
+            </div>
 
-        <h2>Transactions</h2>
+        </div>
 
-        <ul id="transactionList"></ul>
+    </section>
 
-    </div>
+
+    <!-- Contact -->
+    <section id="contact">
+
+        <h2 class="title">Contact Me</h2>
+
+        <div class="contact-box">
+
+            <input type="text" id="name" placeholder="Your Name">
+
+            <input type="email" id="email" placeholder="Your Email">
+
+            <textarea id="message" placeholder="Your Message"></textarea>
+
+            <button onclick="sendMessage()">Send Message</button>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <p>© 2026 My Portfolio | All Rights Reserved</p>
+
+    </footer>
+
 
     <script src="script.js"></script>
 
 </body>
 
 </html>
+```
